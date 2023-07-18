@@ -1,9 +1,9 @@
 import { IBook } from "./books.interface";
 import { Books } from "./books.model";
 
-const addBooks = async (bookData: IBook): Promise<IBook | null> => {
-  const addedBook = await Books.create(bookData);
-  return addedBook;
+const addBooks = async (book: IBook): Promise<IBook | null> => {
+  const addBook = await Books.create({ ...book });
+  return addBook;
 };
 const getAllBooks = async () => {
   const result = await Books.find();
