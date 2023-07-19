@@ -16,7 +16,7 @@ const getAllBooks = async (filters: IBookFilters): Promise<IBook[]> => {
       $or: bookSearchableFields.map((field) => ({
         [field]: {
           $regex: searchTerm,
-          $option: "i",
+          $options: "i",
         },
       })),
     });
@@ -32,29 +32,35 @@ const getAllBooks = async (filters: IBookFilters): Promise<IBook[]> => {
     andConditions.length > 0 ? { $and: andConditions } : {};
   const result = await Books.find(whereConditions);
   return result;
-  /*   let query = Books.find();
-
-  if (andConditions.length > 0) {
-    query = query.and(andConditions);
+};
+const getSingleBook = async (bookId: string): Promise<IBook | null> => {
+  const book = await Books.findById(bookId);
+  if (!book) {
+    throw new Error("No book found!");
   }
-
-  const books = await query;
-
-  if (!books) {
-    throw new Error("No cow found!");
-  }
-
-  return books; */
+  return book;
 };
 
 const updateBook = async (
-  id: string,
+  bookId: string,
+
   payload: Partial<IBook>
 ): Promise<IBook | null> => {
-  const result = await Books.findOneAndUpdate({ _id: id }, payload, {
+  const book = await Books.findById(bookId);
+
+  if (!book) {
+    throw new Error("No Book Found!!");
+  }
+
+  const updatedBook = await Books.findByIdAndUpdate({ _id: bookId }, payload, {
     new: true,
   });
-  return result;
+
+  if (!updatedBook) {
+    throw new Error("Failed to update book!");
+  }
+
+  return updatedBook;
 };
 const deleteBook = async (id: string): Promise<IBook | null> => {
   const result = await Books.findByIdAndDelete(id);
@@ -63,7 +69,7 @@ const deleteBook = async (id: string): Promise<IBook | null> => {
 export const BookService = {
   addBooks,
   getAllBooks,
-
+  getSingleBook,
   updateBook,
   deleteBook,
 };

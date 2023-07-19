@@ -31,7 +31,7 @@ const getAllBooks = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
-/* const getSingleBook: RequestHandler = async (req, res, next) => {
+const getSingleBook: RequestHandler = async (req, res, next) => {
   const id = req.params.id;
   const result = await BookService.getSingleBook(id);
   res.status(200).json({
@@ -39,7 +39,7 @@ const getAllBooks = catchAsync(async (req: Request, res: Response) => {
     message: "Book retrieved successfully!",
     data: result,
   });
-}; */
+};
 const updateBook: RequestHandler = async (req, res, next) => {
   const id = req.params.id;
   const updatedData = req.body;
@@ -48,7 +48,7 @@ const updateBook: RequestHandler = async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    message: "Books updated successfully!",
+    message: "Selected Book updated successfully!",
     data: result,
   });
 };
@@ -59,14 +59,14 @@ const deleteBook: RequestHandler = async (req, res, next) => {
 
   res.status(200).json({
     success: true,
-    message: "Books deleted successfully!",
+    message: "Selected Book deleted successfully!",
     data: result,
   });
 };
 export const BookController = {
   addBooks,
   getAllBooks,
-  // getSingleBook,
+  getSingleBook,
   updateBook,
   deleteBook,
 };
