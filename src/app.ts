@@ -1,7 +1,7 @@
 import express, { Application } from "express";
 import cors from "cors";
 import { BookRoutes } from "./app/module/books/book.routes";
-import { UserRoutes } from "./app/module/user/user.route";
+import routes from "./app/routes";
 
 const app: Application = express();
 
@@ -13,7 +13,6 @@ app.use(express.urlencoded({ extended: true }));
 
 // Application routes
 
-app.use("/api/v1/books/", BookRoutes);
-app.use("/api/v1/user/", UserRoutes);
+app.use("/api/v1/", routes);
 
 export default app;

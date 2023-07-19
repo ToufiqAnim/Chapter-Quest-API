@@ -1,6 +1,12 @@
 import { RequestHandler } from "express";
 import { BookService } from "./books.service";
-import { Books } from "./books.model";
+import { Request, Response } from "express";
+import pick from "../../../shared/pick";
+import { bookFilterableFields } from "./book.constant";
+import { sendResponse } from "../../../shared/sendResonse";
+import httpStatus from "http-status";
+import { IBook } from "./books.interface";
+import { catchAsync } from "../../../shared/catchAsync";
 
 const addBooks: RequestHandler = async (req, res, next) => {
   try {
@@ -15,15 +21,17 @@ const addBooks: RequestHandler = async (req, res, next) => {
     console.log(error);
   }
 };
-const getAllBooks: RequestHandler = async (req, res, next) => {
-  const result = await BookService.getAllBooks();
-  res.status(200).json({
+const getAllBooks = catchAsync(async (req: Request, res: Response) => {
+  const filters = pick(req.query, bookFilterableFields);
+  const result = await BookService.getAllBooks(filters);
+  sendResponse<IBook[]>(res, {
+    statusCode: httpStatus.OK,
     success: true,
-    message: "Books retrieved successfully!",
+    message: "Books retrieved successfully",
     data: result,
   });
-};
-const getSingleBook: RequestHandler = async (req, res, next) => {
+});
+/* const getSingleBook: RequestHandler = async (req, res, next) => {
   const id = req.params.id;
   const result = await BookService.getSingleBook(id);
   res.status(200).json({
@@ -31,7 +39,7 @@ const getSingleBook: RequestHandler = async (req, res, next) => {
     message: "Book retrieved successfully!",
     data: result,
   });
-};
+}; */
 const updateBook: RequestHandler = async (req, res, next) => {
   const id = req.params.id;
   const updatedData = req.body;
@@ -58,7 +66,7 @@ const deleteBook: RequestHandler = async (req, res, next) => {
 export const BookController = {
   addBooks,
   getAllBooks,
-  getSingleBook,
+  // getSingleBook,
   updateBook,
   deleteBook,
 };

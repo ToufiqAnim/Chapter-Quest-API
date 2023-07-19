@@ -4,11 +4,11 @@ export type IBook = {
   title: string;
   genre: string;
   author: string;
+  publisher?: ObjectId;
+  reviews?: object[];
   publicationDate: string;
   image: string;
   description: string;
-  publisher?: ObjectId;
-  reviews?: object[];
 };
 export type IReview = {
   review: string;
@@ -17,10 +17,10 @@ export type IReview = {
 
 export type BookModel = Model<IBook, Record<string, unknown>>;
 
-export const bookSearchableFields = ["title", "author", "gnre", "description"];
+export const bookSearchableFields = ["title", "author", "genre", "description"];
 
 export type IBookFilters = {
   searchTerm?: string;
   genre?: string;
-  publicationDate?: number;
+  publicationDate?: string;
 };
