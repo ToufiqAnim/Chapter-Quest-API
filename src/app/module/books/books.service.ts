@@ -1,4 +1,9 @@
-import { IBook, IBookFilters, bookSearchableFields } from "./books.interface";
+import {
+  IBook,
+  IBookFilters,
+  IReview,
+  bookSearchableFields,
+} from "./books.interface";
 import { Books } from "./books.model";
 
 const addBooks = async (book: IBook): Promise<IBook | null> => {
@@ -34,7 +39,10 @@ const getAllBooks = async (filters: IBookFilters): Promise<IBook[]> => {
   return result;
 };
 const getSingleBook = async (bookId: string): Promise<IBook | null> => {
-  const book = await Books.findById(bookId);
+  const book = await Books.findById(bookId).populate({
+    path: "reviews",
+    model: "User",
+  });
   if (!book) {
     throw new Error("No book found!");
   }
@@ -47,6 +55,8 @@ const updateBook = async (
   payload: Partial<IBook>
 ): Promise<IBook | null> => {
   const book = await Books.findById(bookId);
+
+  // const varifiedUser = book?.publisher
 
   if (!book) {
     throw new Error("No Book Found!!");
@@ -66,10 +76,50 @@ const deleteBook = async (id: string): Promise<IBook | null> => {
   const result = await Books.findByIdAndDelete(id);
   return result;
 };
+
+const getReview = async (reviewId: string): Promise<IReview[] | null> => {
+  const book = await Books.findById(reviewId).populate("reviews.reviewer");
+  if (!book) {
+    return null;
+  }
+  if (!book.reviews || book.reviews.length === 0) {
+    return null;
+  }
+  const bookReviewer: IReview[] = book.reviews.map((review: any) => ({
+    review: review.review,
+    reviewer: review.reviewer ? { name: review.reviewer.name } : null,
+  }));
+  return bookReviewer;
+};
+const PostReview = async (
+  id: string,
+  reviewData: string | { review: string }
+): Promise<IBook> => {
+  const book = await Books.findById(id);
+
+  if (!book) {
+    throw new Error("No book found!");
+  }
+
+  const review =
+    typeof reviewData === "string" ? reviewData : reviewData.review;
+
+  const newReview: IReview = {
+    review: review,
+    reviewer: user._id,
+  };
+
+  book.reviews!.push(newReview);
+
+  const updatedBook = await book.save();
+  return updatedBook;
+};
 export const BookService = {
   addBooks,
   getAllBooks,
   getSingleBook,
   updateBook,
   deleteBook,
+  PostReview,
+  getReview,
 };
