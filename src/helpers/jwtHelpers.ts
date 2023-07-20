@@ -1,7 +1,7 @@
 import jwt, { JwtPayload as JwtPayload, Secret } from "jsonwebtoken";
 import config from "../config";
 
-const createtoken = (
+const createToken = (
   payload: Record<string, unknown>,
   secret: Secret,
   expireTime: string
@@ -15,7 +15,7 @@ const verifyToken = (token: string, secret: Secret): JwtPayload => {
   return jwt.verify(token, secret) as JwtPayload;
 };
 
-export const jwtHeplers = {
-  createtoken,
+export const jwtHelpers = {
+  createToken,
   verifyToken,
 };

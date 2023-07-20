@@ -8,22 +8,24 @@ import httpStatus from "http-status";
 import { IBook } from "./books.interface";
 import { catchAsync } from "../../../shared/catchAsync";
 
-const addBooks: RequestHandler = async (req, res, next) => {
-  try {
-    const { ...bookData } = req.body;
-    const result = await BookService.addBooks(bookData);
-    res.status(200).json({
-      success: true,
-      message: "Book added to Database successfully!",
-      data: result,
-    });
-  } catch (error) {
-    console.log(error);
+const AddBooks: RequestHandler = async (req, res, next) => {
+  if (!req.user || !req.body) {
+    return res.sendStatus(httpStatus.BAD_REQUEST);
   }
+  const book = req.body;
+  const user = req.user;
+  const result = await BookService.AddBooks(book, user);
+
+  sendResponse<IBook>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Books Created successfully",
+    data: result,
+  });
 };
 const getAllBooks = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, bookFilterableFields);
-  const result = await BookService.getAllBooks(filters);
+  const result = await BookService.GetAllBooks(filters);
   sendResponse<IBook[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
@@ -33,7 +35,7 @@ const getAllBooks = catchAsync(async (req: Request, res: Response) => {
 });
 const getSingleBook: RequestHandler = async (req, res, next) => {
   const id = req.params.id;
-  const result = await BookService.getSingleBook(id);
+  const result = await BookService.GetSingleBook(id);
   res.status(200).json({
     success: true,
     message: "Book retrieved successfully!",
@@ -41,21 +43,28 @@ const getSingleBook: RequestHandler = async (req, res, next) => {
   });
 };
 const updateBook: RequestHandler = async (req, res, next) => {
+  if (!req.user || !req.body) {
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  }
   const id = req.params.id;
+  const user = req.user;
   const updatedData = req.body;
+  const result = await BookService.UpdateBook(id, user, updatedData);
 
-  const result = await BookService.updateBook(id, updatedData);
-
-  res.status(200).json({
+  sendResponse<IBook>(res, {
+    statusCode: httpStatus.OK,
     success: true,
-    message: "Selected Book updated successfully!",
+    message: "Book updated successfully",
     data: result,
   });
 };
 const deleteBook: RequestHandler = async (req, res, next) => {
+  if (!req.user || !req.body) {
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  }
   const id = req.params.id;
-
-  const result = await BookService.deleteBook(id);
+  const user = req.user;
+  const result = await BookService.DeleteBook(id, user);
 
   res.status(200).json({
     success: true,
@@ -64,7 +73,7 @@ const deleteBook: RequestHandler = async (req, res, next) => {
   });
 };
 export const BookController = {
-  addBooks,
+  addBooks: AddBooks,
   getAllBooks,
   getSingleBook,
   updateBook,

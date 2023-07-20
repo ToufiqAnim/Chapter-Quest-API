@@ -1,3 +1,4 @@
+import { JwtPayload } from "jsonwebtoken";
 import {
   IBook,
   IBookFilters,
@@ -6,14 +7,17 @@ import {
 } from "./books.interface";
 import { Books } from "./books.model";
 
-const addBooks = async (book: IBook): Promise<IBook | null> => {
-  const addBook = await Books.create({ ...book });
+const AddBooks = async (
+  book: IBook,
+  user: JwtPayload
+): Promise<IBook | null> => {
+  const addBook = await Books.create({ ...book, publisher: user._id });
   if (!addBook) {
     throw new Error("Failed to add book");
   }
   return addBook;
 };
-const getAllBooks = async (filters: IBookFilters): Promise<IBook[]> => {
+const GetAllBooks = async (filters: IBookFilters): Promise<IBook[]> => {
   const { searchTerm, ...filtersData } = filters;
   const andConditions = [];
   if (searchTerm) {
@@ -38,8 +42,8 @@ const getAllBooks = async (filters: IBookFilters): Promise<IBook[]> => {
   const result = await Books.find(whereConditions);
   return result;
 };
-const getSingleBook = async (bookId: string): Promise<IBook | null> => {
-  const book = await Books.findById(bookId).populate({
+const GetSingleBook = async (id: string): Promise<IBook | null> => {
+  const book = await Books.findById({ _id: id }).populate({
     path: "reviews",
     model: "User",
   });
@@ -49,20 +53,23 @@ const getSingleBook = async (bookId: string): Promise<IBook | null> => {
   return book;
 };
 
-const updateBook = async (
-  bookId: string,
-
+const UpdateBook = async (
+  id: string,
+  user: JwtPayload,
   payload: Partial<IBook>
 ): Promise<IBook | null> => {
-  const book = await Books.findById(bookId);
-
-  // const varifiedUser = book?.publisher
-
+  const book = await Books.findById({ id });
   if (!book) {
     throw new Error("No Book Found!!");
   }
+  const bookPublisher =
+    book?.publisher && book.publisher.toString() === user._id;
 
-  const updatedBook = await Books.findByIdAndUpdate({ _id: bookId }, payload, {
+  if (!bookPublisher) {
+    throw new Error("You are not allowed to edit this book!");
+  }
+
+  const updatedBook = await Books.findByIdAndUpdate({ id }, payload, {
     new: true,
   });
 
@@ -72,12 +79,24 @@ const updateBook = async (
 
   return updatedBook;
 };
-const deleteBook = async (id: string): Promise<IBook | null> => {
-  const result = await Books.findByIdAndDelete(id);
-  return result;
+const DeleteBook = async (id: string, user: JwtPayload): Promise<void> => {
+  const book = await Books.findById({ id });
+
+  if (!book) {
+    throw new Error("No book found!");
+  }
+  const bookPublisher =
+    book.publisher && book.publisher.toString() === user._id;
+
+  if (bookPublisher) {
+    const deletedBook = await Books.findByIdAndDelete({ id });
+    if (!deletedBook) {
+      throw new Error("No user found!");
+    }
+  }
 };
 
-const getReview = async (reviewId: string): Promise<IReview[] | null> => {
+const GetReview = async (reviewId: string): Promise<IReview[] | null> => {
   const book = await Books.findById(reviewId).populate("reviews.reviewer");
   if (!book) {
     return null;
@@ -93,6 +112,7 @@ const getReview = async (reviewId: string): Promise<IReview[] | null> => {
 };
 const PostReview = async (
   id: string,
+  user: JwtPayload,
   reviewData: string | { review: string }
 ): Promise<IBook> => {
   const book = await Books.findById(id);
@@ -115,11 +135,11 @@ const PostReview = async (
   return updatedBook;
 };
 export const BookService = {
-  addBooks,
-  getAllBooks,
-  getSingleBook,
-  updateBook,
-  deleteBook,
+  AddBooks,
+  GetAllBooks,
+  GetSingleBook,
+  UpdateBook,
+  DeleteBook,
   PostReview,
-  getReview,
+  GetReview,
 };

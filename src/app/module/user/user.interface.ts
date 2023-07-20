@@ -1,6 +1,6 @@
 import { Model } from "mongoose";
 
-export type IReader = {
+export type IUser = {
   name: string;
   email: string;
   password: string;
@@ -9,19 +9,19 @@ export type IReader = {
   finishedBooks: string[];
 };
 
-export type IFindReader = {
+export type IFindUser = {
   _id: string;
   name: string;
   email: string;
   password: string;
 };
 
-export type ReaderModel = {
+export type UserModel = {
   isUserExist(
     email: string
-  ): Promise<Pick<IFindReader, "_id" | "name" | "email" | "password">>;
+  ): Promise<Pick<IFindUser, "_id" | "name" | "email" | "password">>;
   isPasswordMatched(
     givenPassword: string,
     savedPassword: string
   ): Promise<boolean>;
-} & Model<IReader>;
+} & Model<IUser>;

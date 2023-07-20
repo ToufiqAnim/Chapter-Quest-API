@@ -1,8 +1,9 @@
 import { Schema, model } from "mongoose";
 import config from "../../../config";
-import { IFindReader, IReader, ReaderModel } from "./reader.interface";
+import { IFindUser, IUser, UserModel } from "./user.interface";
+import bcrypt from "bcrypt";
 
-const ReaderSchema = new Schema<IReader, ReaderModel>(
+const UserSchema = new Schema<IUser, UserModel>(
   {
     name: {
       type: String,
@@ -32,16 +33,16 @@ const ReaderSchema = new Schema<IReader, ReaderModel>(
   }
 );
 
-ReaderSchema.statics.isUserExist = async function (
+UserSchema.statics.isUserExist = async function (
   email: string
-): Promise<Pick<IFindReader, "_id" | "email" | "password"> | null> {
-  return await User.findOne(
+): Promise<Pick<IFindUser, "_id" | "email" | "password"> | null> {
+  return await Users.findOne(
     { email },
     { _id: 1, name: 1, email: 1, password: 1 }
   );
 };
 
-ReaderSchema.statics.isPasswordMatched = async function (
+UserSchema.statics.isPasswordMatched = async function (
   givenPassword: string,
   savedPassword: string
 ): Promise<boolean> {
@@ -49,7 +50,7 @@ ReaderSchema.statics.isPasswordMatched = async function (
 };
 
 // Pre-save middleware function
-ReaderSchema.pre("save", async function (next) {
+UserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     return next();
   }
@@ -61,4 +62,4 @@ ReaderSchema.pre("save", async function (next) {
   next();
 });
 
-export const User = model<IReader, ReaderModel>("Reader", ReaderSchema);
+export const Users = model<IUser, UserModel>("User", UserSchema);

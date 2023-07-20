@@ -1,6 +1,7 @@
-import express, { Application } from "express";
+import express, { Application, NextFunction, Request, Response } from "express";
 import cors from "cors";
-import { BookRoutes } from "./app/module/books/book.routes";
+import httpStatus from "http-status";
+
 import router from "./app/routes";
 import globalErrorHandler from "./app/middleware/globalErrorHandler";
 
@@ -18,3 +19,17 @@ app.use("/api/v1/", router);
 
 app.use(globalErrorHandler);
 export default app;
+
+app.use((req: Request, res: Response, next: NextFunction) => {
+  res.status(httpStatus.NOT_FOUND).json({
+    success: false,
+    message: "Not Found",
+    errorMessages: [
+      {
+        path: req.originalUrl,
+        message: "API Not Found",
+      },
+    ],
+  });
+  next();
+});
