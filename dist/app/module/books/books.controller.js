@@ -19,7 +19,7 @@ const book_constant_1 = require("./book.constant");
 const sendResonse_1 = require("../../../shared/sendResonse");
 const http_status_1 = __importDefault(require("http-status"));
 const catchAsync_1 = require("../../../shared/catchAsync");
-const AddBooks = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const AddBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.user || !req.body) {
         return res.sendStatus(http_status_1.default.BAD_REQUEST);
     }
@@ -33,7 +33,7 @@ const AddBooks = (req, res, next) => __awaiter(void 0, void 0, void 0, function*
         data: result,
     });
 });
-const getAllBooks = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const GetAllBooks = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const filters = (0, pick_1.default)(req.query, book_constant_1.bookFilterableFields);
     const result = yield books_service_1.BookService.GetAllBooks(filters);
     (0, sendResonse_1.sendResponse)(res, {
@@ -43,7 +43,7 @@ const getAllBooks = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0,
         data: result,
     });
 }));
-const getSingleBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const GetSingleBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     const id = req.params.id;
     const result = yield books_service_1.BookService.GetSingleBook(id);
     res.status(200).json({
@@ -52,7 +52,7 @@ const getSingleBook = (req, res, next) => __awaiter(void 0, void 0, void 0, func
         data: result,
     });
 });
-const updateBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const UpdateBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.user || !req.body) {
         return res.sendStatus(http_status_1.default.BAD_REQUEST);
     }
@@ -67,7 +67,7 @@ const updateBook = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         data: result,
     });
 });
-const deleteBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const DeleteBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.user || !req.body) {
         return res.sendStatus(http_status_1.default.BAD_REQUEST);
     }
@@ -80,10 +80,37 @@ const deleteBook = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         data: result,
     });
 });
+const AddReview = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!req.user || !req.body) {
+        return res.sendStatus(http_status_1.default.BAD_REQUEST);
+    }
+    const id = req.params.id;
+    const user = req.user;
+    const reviewData = req.body;
+    const result = yield books_service_1.BookService.PostReview(id, user, reviewData);
+    (0, sendResonse_1.sendResponse)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Add Review successfully",
+        data: result,
+    });
+}));
+const GetReview = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const reviewBookId = req.params.reviewBookId;
+    const result = yield books_service_1.BookService.GetReview(reviewBookId);
+    (0, sendResonse_1.sendResponse)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Review retrieved successfully",
+        data: result,
+    });
+}));
 exports.BookController = {
-    addBooks: AddBooks,
-    getAllBooks,
-    getSingleBook,
-    updateBook,
-    deleteBook,
+    AddBook,
+    GetAllBooks,
+    GetSingleBook,
+    UpdateBook,
+    DeleteBook,
+    GetReview,
+    AddReview,
 };

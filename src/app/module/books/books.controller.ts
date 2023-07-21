@@ -5,7 +5,7 @@ import pick from "../../../shared/pick";
 import { bookFilterableFields } from "./book.constant";
 import { sendResponse } from "../../../shared/sendResonse";
 import httpStatus from "http-status";
-import { IBook } from "./books.interface";
+import { IBook, IReview } from "./books.interface";
 import { catchAsync } from "../../../shared/catchAsync";
 
 const AddBook: RequestHandler = async (req, res, next) => {
@@ -72,10 +72,40 @@ const DeleteBook: RequestHandler = async (req, res, next) => {
     data: result,
   });
 };
+const AddReview = catchAsync(async (req: Request, res: Response) => {
+  if (!req.user || !req.body) {
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  }
+  const id = req.params.id;
+  const user = req.user;
+  const reviewData = req.body;
+  const result = await BookService.PostReview(id, user, reviewData);
+
+  sendResponse<IBook>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Add Review successfully",
+    data: result,
+  });
+});
+const GetReview = catchAsync(async (req: Request, res: Response) => {
+  const reviewBookId = req.params.reviewBookId;
+  const result = await BookService.GetReview(reviewBookId);
+
+  sendResponse<IReview[]>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Review retrieved successfully",
+    data: result,
+  });
+});
+
 export const BookController = {
   AddBook,
   GetAllBooks,
   GetSingleBook,
   UpdateBook,
   DeleteBook,
+  GetReview,
+  AddReview,
 };
