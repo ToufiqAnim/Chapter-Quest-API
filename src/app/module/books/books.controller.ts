@@ -8,7 +8,7 @@ import httpStatus from "http-status";
 import { IBook } from "./books.interface";
 import { catchAsync } from "../../../shared/catchAsync";
 
-const AddBooks: RequestHandler = async (req, res, next) => {
+const AddBook: RequestHandler = async (req, res, next) => {
   if (!req.user || !req.body) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
@@ -23,7 +23,7 @@ const AddBooks: RequestHandler = async (req, res, next) => {
     data: result,
   });
 };
-const getAllBooks = catchAsync(async (req: Request, res: Response) => {
+const GetAllBooks = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, bookFilterableFields);
   const result = await BookService.GetAllBooks(filters);
   sendResponse<IBook[]>(res, {
@@ -33,7 +33,7 @@ const getAllBooks = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
-const getSingleBook: RequestHandler = async (req, res, next) => {
+const GetSingleBook: RequestHandler = async (req, res, next) => {
   const id = req.params.id;
   const result = await BookService.GetSingleBook(id);
   res.status(200).json({
@@ -42,7 +42,7 @@ const getSingleBook: RequestHandler = async (req, res, next) => {
     data: result,
   });
 };
-const updateBook: RequestHandler = async (req, res, next) => {
+const UpdateBook: RequestHandler = async (req, res, next) => {
   if (!req.user || !req.body) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
@@ -58,7 +58,7 @@ const updateBook: RequestHandler = async (req, res, next) => {
     data: result,
   });
 };
-const deleteBook: RequestHandler = async (req, res, next) => {
+const DeleteBook: RequestHandler = async (req, res, next) => {
   if (!req.user || !req.body) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
@@ -73,9 +73,9 @@ const deleteBook: RequestHandler = async (req, res, next) => {
   });
 };
 export const BookController = {
-  addBooks: AddBooks,
-  getAllBooks,
-  getSingleBook,
-  updateBook,
-  deleteBook,
+  AddBook,
+  GetAllBooks,
+  GetSingleBook,
+  UpdateBook,
+  DeleteBook,
 };

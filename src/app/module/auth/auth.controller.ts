@@ -5,7 +5,7 @@ import { catchAsync } from "../../../shared/catchAsync";
 
 import { ILoginResponse } from "./auth.interface";
 import { AuthService } from "./auth.service";
-import { IUser } from "../reader/user.interface";
+import { IUser } from "../user/user.interface";
 import { sendResponse } from "../../../shared/sendResonse";
 
 const signup = catchAsync(async (req: Request, res: Response) => {
