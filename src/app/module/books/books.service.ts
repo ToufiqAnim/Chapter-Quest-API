@@ -7,15 +7,15 @@ import {
 } from "./books.interface";
 import { Books } from "./books.model";
 
-const AddBooks = async (
+const AddBook = async (
   book: IBook,
   user: JwtPayload
 ): Promise<IBook | null> => {
-  const addBook = await Books.create({ ...book, publisher: user._id });
-  if (!addBook) {
-    throw new Error("Failed to add book");
+  const newAddedBook = await Books.create({ ...book, publisher: user._id });
+  if (!newAddedBook) {
+    throw new Error("Failed to create book!");
   }
-  return addBook;
+  return newAddedBook;
 };
 const GetAllBooks = async (filters: IBookFilters): Promise<IBook[]> => {
   const { searchTerm, ...filtersData } = filters;
@@ -135,7 +135,7 @@ const PostReview = async (
   return updatedBook;
 };
 export const BookService = {
-  AddBooks,
+  AddBook,
   GetAllBooks,
   GetSingleBook,
   UpdateBook,

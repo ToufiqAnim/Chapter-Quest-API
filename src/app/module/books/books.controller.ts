@@ -8,21 +8,22 @@ import httpStatus from "http-status";
 import { IBook, IReview } from "./books.interface";
 import { catchAsync } from "../../../shared/catchAsync";
 
-const AddBook: RequestHandler = async (req, res, next) => {
+const AddBook = catchAsync(async (req: Request, res: Response) => {
   if (!req.user || !req.body) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
   const book = req.body;
   const user = req.user;
-  const result = await BookService.AddBooks(book, user);
+  const result = await BookService.AddBook(book, user);
 
   sendResponse<IBook>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Books Created successfully",
+    message: "Book Created successfully",
     data: result,
   });
-};
+});
+
 const GetAllBooks = catchAsync(async (req: Request, res: Response) => {
   const filters = pick(req.query, bookFilterableFields);
   const result = await BookService.GetAllBooks(filters);
