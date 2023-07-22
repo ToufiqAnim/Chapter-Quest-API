@@ -5,7 +5,7 @@ import auth from "../../middleware/auth";
 const router = express.Router();
 
 router.post("/add-book", auth(), BookController.AddBook);
-router.get("/", auth(), BookController.GetAllBooks);
+router.get("/", BookController.GetAllBooks);
 router.get("/:id", BookController.GetSingleBook);
 
 router.delete("/:id", auth(), BookController.DeleteBook);

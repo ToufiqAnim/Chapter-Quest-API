@@ -23,12 +23,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookService = void 0;
 const books_interface_1 = require("./books.interface");
 const books_model_1 = require("./books.model");
-const AddBooks = (book, user) => __awaiter(void 0, void 0, void 0, function* () {
-    const addBook = yield books_model_1.Books.create(Object.assign(Object.assign({}, book), { publisher: user._id }));
-    if (!addBook) {
-        throw new Error("Failed to add book");
+const AddBook = (book, user) => __awaiter(void 0, void 0, void 0, function* () {
+    const newAddedBook = yield books_model_1.Books.create(Object.assign(Object.assign({}, book), { publisher: user._id }));
+    if (!newAddedBook) {
+        throw new Error("Failed to create book!");
     }
-    return addBook;
+    return newAddedBook;
 });
 const GetAllBooks = (filters) => __awaiter(void 0, void 0, void 0, function* () {
     const { searchTerm } = filters, filtersData = __rest(filters, ["searchTerm"]);
@@ -123,7 +123,7 @@ const PostReview = (id, user, reviewData) => __awaiter(void 0, void 0, void 0, f
     return updatedBook;
 });
 exports.BookService = {
-    AddBooks,
+    AddBook,
     GetAllBooks,
     GetSingleBook,
     UpdateBook,

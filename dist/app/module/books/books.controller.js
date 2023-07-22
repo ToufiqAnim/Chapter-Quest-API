@@ -19,20 +19,20 @@ const book_constant_1 = require("./book.constant");
 const sendResonse_1 = require("../../../shared/sendResonse");
 const http_status_1 = __importDefault(require("http-status"));
 const catchAsync_1 = require("../../../shared/catchAsync");
-const AddBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const AddBook = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.user || !req.body) {
         return res.sendStatus(http_status_1.default.BAD_REQUEST);
     }
     const book = req.body;
     const user = req.user;
-    const result = yield books_service_1.BookService.AddBooks(book, user);
+    const result = yield books_service_1.BookService.AddBook(book, user);
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Books Created successfully",
+        message: "Book Created successfully",
         data: result,
     });
-});
+}));
 const GetAllBooks = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const filters = (0, pick_1.default)(req.query, book_constant_1.bookFilterableFields);
     const result = yield books_service_1.BookService.GetAllBooks(filters);
