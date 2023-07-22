@@ -9,7 +9,7 @@ const books_controller_1 = require("./books.controller");
 const auth_1 = __importDefault(require("../../middleware/auth"));
 const router = express_1.default.Router();
 router.post("/add-book", (0, auth_1.default)(), books_controller_1.BookController.AddBook);
-router.get("/", (0, auth_1.default)(), books_controller_1.BookController.GetAllBooks);
+router.get("/", books_controller_1.BookController.GetAllBooks);
 router.get("/:id", books_controller_1.BookController.GetSingleBook);
 router.delete("/:id", (0, auth_1.default)(), books_controller_1.BookController.DeleteBook);
 router.patch("/:id", (0, auth_1.default)(), books_controller_1.BookController.UpdateBook);

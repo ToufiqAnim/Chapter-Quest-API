@@ -79,21 +79,18 @@ const UpdateBook = async (
 
   return updatedBook;
 };
-const DeleteBook = async (id: string, user: JwtPayload): Promise<void> => {
-  const book = await Books.findById({ id });
+const DeleteBook = async (
+  id: string,
+  user: JwtPayload
+): Promise<IBook | null> => {
+  const book = await Books.findById(id);
 
   if (!book) {
     throw new Error("No book found!");
   }
-  const bookPublisher =
-    book.publisher && book.publisher.toString() === user._id;
 
-  if (bookPublisher) {
-    const deletedBook = await Books.findByIdAndDelete({ id });
-    if (!deletedBook) {
-      throw new Error("No user found!");
-    }
-  }
+  const deletedBook = await Books.findByIdAndDelete(id);
+  return deletedBook;
 };
 
 const GetReview = async (reviewId: string): Promise<IReview[] | null> => {
