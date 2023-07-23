@@ -55,7 +55,7 @@ const GetSingleBook = async (id: string): Promise<IBook | null> => {
 
 const UpdateBook = async (
   id: string,
-  user: JwtPayload,
+
   payload: Partial<IBook>
 ): Promise<IBook | null> => {
   const book = await Books.findById({ id });
@@ -63,7 +63,7 @@ const UpdateBook = async (
     throw new Error("No Book Found!!");
   }
 
-  const updatedBook = await Books.findByIdAndUpdate({ id }, payload, {
+  const updatedBook = await Books.findByIdAndUpdate({ id: id }, payload, {
     new: true,
   });
 

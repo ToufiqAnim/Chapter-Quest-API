@@ -48,9 +48,9 @@ const UpdateBook: RequestHandler = async (req, res, next) => {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
   const id = req.params.id;
-  const user = req.user;
+
   const updatedData = req.body;
-  const result = await BookService.UpdateBook(id, user, updatedData);
+  const result = await BookService.UpdateBook(id, updatedData);
 
   sendResponse<IBook>(res, {
     statusCode: httpStatus.OK,

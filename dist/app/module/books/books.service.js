@@ -69,10 +69,6 @@ const UpdateBook = (id, user, payload) => __awaiter(void 0, void 0, void 0, func
     if (!book) {
         throw new Error("No Book Found!!");
     }
-    const bookPublisher = (book === null || book === void 0 ? void 0 : book.publisher) && book.publisher.toString() === user._id;
-    if (!bookPublisher) {
-        throw new Error("You are not allowed to edit this book!");
-    }
     const updatedBook = yield books_model_1.Books.findByIdAndUpdate({ id }, payload, {
         new: true,
     });
