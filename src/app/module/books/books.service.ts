@@ -62,12 +62,6 @@ const UpdateBook = async (
   if (!book) {
     throw new Error("No Book Found!!");
   }
-  const bookPublisher =
-    book?.publisher && book.publisher.toString() === user._id;
-
-  if (!bookPublisher) {
-    throw new Error("You are not allowed to edit this book!");
-  }
 
   const updatedBook = await Books.findByIdAndUpdate({ id }, payload, {
     new: true,

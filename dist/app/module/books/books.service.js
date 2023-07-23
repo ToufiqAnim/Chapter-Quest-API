@@ -82,17 +82,12 @@ const UpdateBook = (id, user, payload) => __awaiter(void 0, void 0, void 0, func
     return updatedBook;
 });
 const DeleteBook = (id, user) => __awaiter(void 0, void 0, void 0, function* () {
-    const book = yield books_model_1.Books.findById({ id });
+    const book = yield books_model_1.Books.findById(id);
     if (!book) {
         throw new Error("No book found!");
     }
-    const bookPublisher = book.publisher && book.publisher.toString() === user._id;
-    if (bookPublisher) {
-        const deletedBook = yield books_model_1.Books.findByIdAndDelete({ id });
-        if (!deletedBook) {
-            throw new Error("No user found!");
-        }
-    }
+    const deletedBook = yield books_model_1.Books.findByIdAndDelete(id);
+    return deletedBook;
 });
 const GetReview = (reviewId) => __awaiter(void 0, void 0, void 0, function* () {
     const book = yield books_model_1.Books.findById(reviewId).populate("reviews.reviewer");
