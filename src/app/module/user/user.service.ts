@@ -55,8 +55,8 @@ const AddToWishlist = async (
   bookId: string,
   user: JwtPayload
 ): Promise<void> => {
-  const { id } = user;
-  const userProfile = await Users.findById(id);
+  const { _id } = user;
+  const userProfile = await Users.findById(_id);
 
   if (!userProfile) {
     throw new Error("User not found");

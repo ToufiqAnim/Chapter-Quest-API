@@ -62,8 +62,8 @@ const GetUserProfile = (user) => __awaiter(void 0, void 0, void 0, function* () 
     return userProfile;
 });
 const AddToWishlist = (bookId, user) => __awaiter(void 0, void 0, void 0, function* () {
-    const { _id } = user;
-    const userProfile = yield user_model_1.Users.findById(_id);
+    const { id } = user;
+    const userProfile = yield user_model_1.Users.findById(id);
     if (!userProfile) {
         throw new Error("User not found");
     }
