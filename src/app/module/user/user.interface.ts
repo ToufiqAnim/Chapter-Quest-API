@@ -1,10 +1,10 @@
-import { Model } from "mongoose";
+import { Model, Schema } from "mongoose";
 
 export type IUser = {
   name: string;
   email: string;
   password: string;
-  wishlist: string[];
+  wishlist: Schema.Types.ObjectId[];
   readingList: string[];
   finishedBooks: string[];
 };

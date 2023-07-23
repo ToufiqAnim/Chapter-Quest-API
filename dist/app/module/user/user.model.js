@@ -30,9 +30,9 @@ const UserSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
-    wishlist: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: "Book" }],
-    readingList: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: "Book" }],
-    finishedBooks: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: "Book" }],
+    wishlist: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: "Books" }],
+    readingList: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: "Books" }],
+    finishedBooks: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: "Books" }],
 }, {
     toJSON: {
         transform(_doc, ret) {
