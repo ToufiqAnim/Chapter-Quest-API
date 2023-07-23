@@ -57,9 +57,8 @@ const UpdateBook = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         return res.sendStatus(http_status_1.default.BAD_REQUEST);
     }
     const id = req.params.id;
-    const user = req.user;
     const updatedData = req.body;
-    const result = yield books_service_1.BookService.UpdateBook(id, user, updatedData);
+    const result = yield books_service_1.BookService.UpdateBook(id, updatedData);
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,

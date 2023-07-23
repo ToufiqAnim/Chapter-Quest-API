@@ -64,12 +64,12 @@ const GetSingleBook = (id) => __awaiter(void 0, void 0, void 0, function* () {
     }
     return book;
 });
-const UpdateBook = (id, user, payload) => __awaiter(void 0, void 0, void 0, function* () {
+const UpdateBook = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
     const book = yield books_model_1.Books.findById({ id });
     if (!book) {
         throw new Error("No Book Found!!");
     }
-    const updatedBook = yield books_model_1.Books.findByIdAndUpdate({ id }, payload, {
+    const updatedBook = yield books_model_1.Books.findByIdAndUpdate({ id: id }, payload, {
         new: true,
     });
     if (!updatedBook) {
