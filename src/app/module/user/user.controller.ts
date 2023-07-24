@@ -88,7 +88,7 @@ const GetWishlist = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
   const result = await UserService.GetWishlists(user);
 
-  sendResponse(res, {
+  sendResponse<string[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Book retrieved successfully from Wishlist",
@@ -148,6 +148,12 @@ const RemoveFromReadingList = catchAsync(
     }
     const user = req.user;
     const bookId = req.params.bookId;
+    if (!bookId) {
+      return res.status(400).json({
+        success: false,
+        message: "Invalid bookId provided.",
+      });
+    }
     await UserService.RemoveFromReadingList(user, bookId);
 
     sendResponse(res, {

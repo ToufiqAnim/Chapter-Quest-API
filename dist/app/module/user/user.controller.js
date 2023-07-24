@@ -140,11 +140,56 @@ const RemoveFromReadingList = (0, catchAsync_1.catchAsync)((req, res) => __await
     }
     const user = req.user;
     const bookId = req.params.bookId;
+    if (!bookId) {
+        return res.status(400).json({
+            success: false,
+            message: "Invalid bookId provided.",
+        });
+    }
     yield user_service_1.UserService.RemoveFromReadingList(user, bookId);
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
         message: "Book successfully remove from Reading List",
+    });
+}));
+const AddToFinishedBook = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!req.user || !req.body) {
+        return res.sendStatus(http_status_1.default.BAD_REQUEST);
+    }
+    const finishedBookId = req.params.finishedBookId;
+    const user = req.user;
+    yield user_service_1.UserService.AddToFinishedBook(finishedBookId, user);
+    (0, sendResonse_1.sendResponse)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Book added to Finished Book List successfully",
+    });
+}));
+const GetFinishedBooks = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!req.user) {
+        return;
+    }
+    const user = req.user;
+    const result = yield user_service_1.UserService.GetFinishedBooks(user);
+    (0, sendResonse_1.sendResponse)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Book retrieved successfully from Finished Book List",
+        data: result,
+    });
+}));
+const RemoveFinishedBooks = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    if (!req.user) {
+        return;
+    }
+    const user = req.user;
+    const removeFBookId = req.params.removeFBookId;
+    yield user_service_1.UserService.RemoveFinishedBooks(user, removeFBookId);
+    (0, sendResonse_1.sendResponse)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Book successfully remove from Finished Books List",
     });
 }));
 exports.UserController = {
@@ -159,4 +204,7 @@ exports.UserController = {
     AddToWishlist,
     GetReadingList,
     RemoveFromReadingList,
+    AddToFinishedBook,
+    GetFinishedBooks,
+    RemoveFinishedBooks,
 };

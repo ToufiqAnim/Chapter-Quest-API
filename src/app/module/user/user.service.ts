@@ -127,11 +127,7 @@ const RemoveFromReadingList = async (
   user: JwtPayload,
   bookId: string
 ): Promise<void> => {
-  await Users.findOneAndUpdate(
-    { _id: user._id },
-    { $pull: { readingList: bookId } },
-    { new: true }
-  );
+  await Users.updateOne({ _id: user._id }, { $pull: { readingList: bookId } });
 };
 const AddToFinishedBook = async (
   finishedBookId: string,
