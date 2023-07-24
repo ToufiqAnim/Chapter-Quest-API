@@ -52,7 +52,6 @@ UserSchema.statics.isPasswordMatched = function (givenPassword, savedPassword) {
         return yield bcrypt_1.default.compare(givenPassword, savedPassword);
     });
 };
-// Pre-save middleware function
 UserSchema.pre("save", function (next) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!this.isModified("password")) {

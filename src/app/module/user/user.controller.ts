@@ -157,7 +157,50 @@ const RemoveFromReadingList = catchAsync(
     });
   }
 );
+const AddToFinishedBook = catchAsync(async (req: Request, res: Response) => {
+  if (!req.user || !req.body) {
+    return res.sendStatus(httpStatus.BAD_REQUEST);
+  }
+  const finishedBookId = req.params.finishedBookId;
+  const user = req.user;
+  await UserService.AddToFinishedBook(finishedBookId, user);
 
+  sendResponse<IUser>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Book added to Finished Book List successfully",
+  });
+});
+
+const GetFinishedBooks = catchAsync(async (req: Request, res: Response) => {
+  if (!req.user) {
+    return;
+  }
+  const user = req.user;
+  const result = await UserService.GetFinishedBooks(user);
+
+  sendResponse<string[]>(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Book retrieved successfully from Finished Book List",
+    data: result,
+  });
+});
+
+const RemoveFinishedBooks = catchAsync(async (req: Request, res: Response) => {
+  if (!req.user) {
+    return;
+  }
+  const user = req.user;
+  const removeFBookId = req.params.removeFBookId;
+  await UserService.RemoveFinishedBooks(user, removeFBookId);
+
+  sendResponse(res, {
+    statusCode: httpStatus.OK,
+    success: true,
+    message: "Book successfully remove from Finished Books List",
+  });
+});
 export const UserController = {
   GetUsers,
   GetUserById,
@@ -170,4 +213,7 @@ export const UserController = {
   AddToWishlist,
   GetReadingList,
   RemoveFromReadingList,
+  AddToFinishedBook,
+  GetFinishedBooks,
+  RemoveFinishedBooks,
 };
