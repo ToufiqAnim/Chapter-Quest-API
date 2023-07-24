@@ -88,7 +88,7 @@ const GetWishlist = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
   const result = await UserService.GetWishlists(user);
 
-  sendResponse<string[]>(res, {
+  sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
     message: "Book retrieved successfully from Wishlist",

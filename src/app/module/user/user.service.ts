@@ -133,7 +133,50 @@ const RemoveFromReadingList = async (
     { new: true }
   );
 };
+const AddToFinishedBook = async (
+  finishedBookId: string,
+  user: JwtPayload
+): Promise<void> => {
+  const { _id } = user;
+  const userInfo = await Users.findById(_id);
 
+  if (!userInfo) {
+    throw new Error("User not found");
+  }
+
+  if (userInfo.finishedBooks.includes(finishedBookId)) {
+    throw new Error("Book already exists in the Finished Book List");
+  }
+
+  const bookIndex = userInfo.readingList.indexOf(finishedBookId);
+  if (bookIndex !== -1) {
+    userInfo.readingList.splice(bookIndex, 1);
+  }
+
+  userInfo.finishedBooks.push(finishedBookId);
+  await userInfo.save();
+};
+
+const GetFinishedBooks = async (user: JwtPayload): Promise<string[]> => {
+  const userInfo = await Users.findById(user._id).populate("finishedBooks");
+
+  if (!userInfo) {
+    throw new Error("User not found");
+  }
+
+  return userInfo.finishedBooks;
+};
+
+const RemoveFinishedBooks = async (
+  user: JwtPayload,
+  removeFBookId: string
+): Promise<void> => {
+  await Users.findOneAndUpdate(
+    { _id: user._id },
+    { $pull: { finishedBooks: removeFBookId } },
+    { new: true }
+  );
+};
 export const UserService = {
   GetAllUsers,
   GetUserById,
@@ -146,4 +189,7 @@ export const UserService = {
   AddToReadingList,
   GetReadingLists,
   RemoveFromReadingList,
+  AddToFinishedBook,
+  GetFinishedBooks,
+  RemoveFinishedBooks,
 };

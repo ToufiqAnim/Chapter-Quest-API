@@ -49,7 +49,6 @@ UserSchema.statics.isPasswordMatched = async function (
   return await bcrypt.compare(givenPassword, savedPassword);
 };
 
-// Pre-save middleware function
 UserSchema.pre("save", async function (next) {
   if (!this.isModified("password")) {
     return next();
