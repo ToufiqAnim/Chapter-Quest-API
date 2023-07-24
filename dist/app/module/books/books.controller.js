@@ -44,8 +44,8 @@ const GetAllBooks = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0,
     });
 }));
 const GetSingleBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
-    const id = req.params.id;
-    const result = yield books_service_1.BookService.GetSingleBook(id);
+    const bookId = req.params.bookId;
+    const result = yield books_service_1.BookService.GetSingleBook(bookId);
     res.status(200).json({
         success: true,
         message: "Book retrieved successfully!",
@@ -56,9 +56,9 @@ const UpdateBook = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     if (!req.user || !req.body) {
         return res.sendStatus(http_status_1.default.BAD_REQUEST);
     }
-    const id = req.params.id;
+    const bookId = req.params.bookId;
     const updatedData = req.body;
-    const result = yield books_service_1.BookService.UpdateBook(id, updatedData);
+    const result = yield books_service_1.BookService.UpdateBook(bookId, updatedData);
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -70,9 +70,9 @@ const DeleteBook = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
     if (!req.user || !req.body) {
         return res.sendStatus(http_status_1.default.BAD_REQUEST);
     }
-    const id = req.params.id;
+    const bookId = req.params.bookId;
     const user = req.user;
-    const result = yield books_service_1.BookService.DeleteBook(id, user);
+    const result = yield books_service_1.BookService.DeleteBook(bookId, user);
     res.status(200).json({
         success: true,
         message: "Selected Book deleted successfully!",
@@ -95,8 +95,8 @@ const AddReview = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, v
     });
 }));
 const GetReview = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const reviewBookId = req.params.reviewBookId;
-    const result = yield books_service_1.BookService.GetReview(reviewBookId);
+    const bookId = req.params.bookId;
+    const result = yield books_service_1.BookService.GetReview(bookId);
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,

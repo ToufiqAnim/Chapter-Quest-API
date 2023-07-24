@@ -54,8 +54,8 @@ const GetAllBooks = (filters) => __awaiter(void 0, void 0, void 0, function* () 
     const result = yield books_model_1.Books.find(whereConditions);
     return result;
 });
-const GetSingleBook = (id) => __awaiter(void 0, void 0, void 0, function* () {
-    const book = yield books_model_1.Books.findById({ _id: id }).populate({
+const GetSingleBook = (bookId) => __awaiter(void 0, void 0, void 0, function* () {
+    const book = yield books_model_1.Books.findById(bookId).populate({
         path: "reviews",
         model: "User",
     });
@@ -64,12 +64,12 @@ const GetSingleBook = (id) => __awaiter(void 0, void 0, void 0, function* () {
     }
     return book;
 });
-const UpdateBook = (id, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const book = yield books_model_1.Books.findById({ id });
+const UpdateBook = (bookId, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const book = yield books_model_1.Books.findById(bookId);
     if (!book) {
         throw new Error("No Book Found!!");
     }
-    const updatedBook = yield books_model_1.Books.findByIdAndUpdate({ id: id }, payload, {
+    const updatedBook = yield books_model_1.Books.findByIdAndUpdate(bookId, payload, {
         new: true,
     });
     if (!updatedBook) {
@@ -77,16 +77,16 @@ const UpdateBook = (id, payload) => __awaiter(void 0, void 0, void 0, function* 
     }
     return updatedBook;
 });
-const DeleteBook = (id, user) => __awaiter(void 0, void 0, void 0, function* () {
-    const book = yield books_model_1.Books.findById(id);
+const DeleteBook = (bookId, user) => __awaiter(void 0, void 0, void 0, function* () {
+    const book = yield books_model_1.Books.findById(bookId);
     if (!book) {
         throw new Error("No book found!");
     }
-    const deletedBook = yield books_model_1.Books.findByIdAndDelete(id);
+    const deletedBook = yield books_model_1.Books.findByIdAndDelete(bookId);
     return deletedBook;
 });
-const GetReview = (reviewId) => __awaiter(void 0, void 0, void 0, function* () {
-    const book = yield books_model_1.Books.findById(reviewId).populate("reviews.reviewer");
+const GetReview = (bookId) => __awaiter(void 0, void 0, void 0, function* () {
+    const book = yield books_model_1.Books.findById(bookId).populate("reviews.reviewer");
     if (!book) {
         return null;
     }

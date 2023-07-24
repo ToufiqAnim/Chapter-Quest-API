@@ -1,35 +1,49 @@
 import express from "express";
-import { UserController } from "./user.controller";
 import auth from "../../middleware/auth";
+import { UserController } from "./user.controller";
+
 const router = express.Router();
 
-// WISHLIST
+// Bonus part
 router.get("/wishlist", auth(), UserController.GetWishlist);
 router.get("/readingList", auth(), UserController.GetReadingList);
+router.get("/finishedBooks", auth(), UserController.GetFinishedBooks);
 router.post("/addToWishlist/:bookId", auth(), UserController.AddToWishlist);
-
 router.post(
   "/addToReadingList/:bookId",
   auth(),
   UserController.AddToReadingList
 );
 router.post(
-  "/removeFromReadingList/:bookId",
+  "/addToFinishedBook/:bookId",
   auth(),
-  UserController.RemoveFromReadingList
+  UserController.AddToFinishedBook
 );
+
 router.post(
   "/removeFromWishlist/:bookId",
   auth(),
   UserController.RemoveFromWishlist
 );
 
-//USER
+router.post(
+  "/removeFromReadingList/:bookId",
+  auth(),
+  UserController.RemoveFromReadingList
+);
 
-router.get("/:id", UserController.GetUserById);
-router.patch("/:id", UserController.UpdateUser);
-router.delete("/:id", UserController.DeleteUser);
-router.get("/", UserController.GetUsers);
-router.get("/profile", UserController.GetUserProfile);
+router.post(
+  "/removeFromFinishedBooks/:bookId",
+  auth(),
+  UserController.RemoveFinishedBooks
+);
+
+//user
+router.get("/:id", auth(), UserController.GetUserById);
+router.patch("/:id", auth(), UserController.UpdateUser);
+router.delete("/:id", auth(), UserController.DeleteUser);
+
+router.get("/", auth(), UserController.GetUsers);
+router.get("/my-profile", auth(), UserController.GetUserProfile);
 
 export const UserRoutes = router;

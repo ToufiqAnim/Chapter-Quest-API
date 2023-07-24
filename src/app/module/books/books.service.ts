@@ -42,10 +42,11 @@ const GetAllBooks = async (filters: IBookFilters): Promise<IBook[]> => {
   const result = await Books.find(whereConditions);
   return result;
 };
-const GetSingleBook = async (id: string): Promise<IBook | null> => {
-  const book = await Books.findById({ _id: id }).populate({
-    path: "reviews",
+const GetSingleBook = async (bookId: string): Promise<IBook | null> => {
+  const book = await Books.findById(bookId).populate({
+    path: "reviews.reviewer",
     model: "User",
+    select: "name",
   });
   if (!book) {
     throw new Error("No book found!");
@@ -54,16 +55,16 @@ const GetSingleBook = async (id: string): Promise<IBook | null> => {
 };
 
 const UpdateBook = async (
-  id: string,
+  bookId: string,
 
   payload: Partial<IBook>
 ): Promise<IBook | null> => {
-  const book = await Books.findById({ id });
+  const book = await Books.findById(bookId);
   if (!book) {
     throw new Error("No Book Found!!");
   }
 
-  const updatedBook = await Books.findByIdAndUpdate({ id: id }, payload, {
+  const updatedBook = await Books.findByIdAndUpdate(bookId, payload, {
     new: true,
   });
 
@@ -74,21 +75,21 @@ const UpdateBook = async (
   return updatedBook;
 };
 const DeleteBook = async (
-  id: string,
+  bookId: string,
   user: JwtPayload
 ): Promise<IBook | null> => {
-  const book = await Books.findById(id);
+  const book = await Books.findById(bookId);
 
   if (!book) {
     throw new Error("No book found!");
   }
 
-  const deletedBook = await Books.findByIdAndDelete(id);
+  const deletedBook = await Books.findByIdAndDelete(bookId);
   return deletedBook;
 };
 
-const GetReview = async (reviewId: string): Promise<IReview[] | null> => {
-  const book = await Books.findById(reviewId).populate("reviews.reviewer");
+const GetReview = async (bookId: string): Promise<IReview[] | null> => {
+  const book = await Books.findById(bookId).populate("reviews.reviewer");
   if (!book) {
     return null;
   }

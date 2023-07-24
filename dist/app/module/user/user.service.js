@@ -107,7 +107,7 @@ const GetReadingLists = (user) => __awaiter(void 0, void 0, void 0, function* ()
     return userProfile.readingList;
 });
 const RemoveFromReadingList = (user, bookId) => __awaiter(void 0, void 0, void 0, function* () {
-    yield user_model_1.Users.updateOne({ _id: user._id }, { $pull: { readingList: bookId } });
+    yield user_model_1.Users.findOneAndUpdate({ _id: user._id }, { $pull: { readingList: bookId } }, { new: true });
 });
 const AddToFinishedBook = (finishedBookId, user) => __awaiter(void 0, void 0, void 0, function* () {
     const { _id } = user;
