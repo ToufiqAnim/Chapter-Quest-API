@@ -29,8 +29,6 @@ const Login = async (payload: ILogin): Promise<ILoginResponse> => {
     throw new ApiError(httpStatus.NOT_FOUND, "Password is incorrect");
   }
 
-  // Create Access & Refresh Token
-
   const { _id, name, email: userEmail } = isUserExist;
 
   const accessToken = jwtHelpers.createToken(
@@ -65,7 +63,6 @@ const RefreshToken = async (token: string) => {
     throw new ApiError(httpStatus.FORBIDDEN, "Invalid Refresh Token");
   }
 
-  // checking deleted user's refresh token
   const { userEmail } = verifiedToken;
 
   const isUserExist = await Users.isUserExist(userEmail);

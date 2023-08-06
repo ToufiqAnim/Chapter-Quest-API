@@ -23,6 +23,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookService = void 0;
 const books_interface_1 = require("./books.interface");
 const books_model_1 = require("./books.model");
+//ADD BOOKS
 const AddBook = (book, user) => __awaiter(void 0, void 0, void 0, function* () {
     const newAddedBook = yield books_model_1.Books.create(Object.assign(Object.assign({}, book), { publisher: user._id }));
     if (!newAddedBook) {
@@ -30,6 +31,7 @@ const AddBook = (book, user) => __awaiter(void 0, void 0, void 0, function* () {
     }
     return newAddedBook;
 });
+//GET ALL BOOKS
 const GetAllBooks = (filters) => __awaiter(void 0, void 0, void 0, function* () {
     const { searchTerm } = filters, filtersData = __rest(filters, ["searchTerm"]);
     const andConditions = [];
@@ -54,6 +56,7 @@ const GetAllBooks = (filters) => __awaiter(void 0, void 0, void 0, function* () 
     const result = yield books_model_1.Books.find(whereConditions);
     return result;
 });
+//GET REVIEWS
 const GetReview = (bookId) => __awaiter(void 0, void 0, void 0, function* () {
     const book = yield books_model_1.Books.findById(bookId).populate("reviews.reviewer");
     if (!book) {
@@ -68,6 +71,7 @@ const GetReview = (bookId) => __awaiter(void 0, void 0, void 0, function* () {
     }));
     return bookReviewer;
 });
+//GET SINGLE BOOK
 const GetSingleBook = (bookId) => __awaiter(void 0, void 0, void 0, function* () {
     const book = yield books_model_1.Books.findById(bookId).populate({
         path: "reviews.reviewer",
@@ -79,6 +83,7 @@ const GetSingleBook = (bookId) => __awaiter(void 0, void 0, void 0, function* ()
     }
     return book;
 });
+//UPDATE BOOK
 const UpdateBook = (bookId, payload) => __awaiter(void 0, void 0, void 0, function* () {
     const book = yield books_model_1.Books.findById(bookId);
     if (!book) {
@@ -92,6 +97,7 @@ const UpdateBook = (bookId, payload) => __awaiter(void 0, void 0, void 0, functi
     }
     return updatedBook;
 });
+//DELETE BOOK
 const DeleteBook = (bookId, user) => __awaiter(void 0, void 0, void 0, function* () {
     const book = yield books_model_1.Books.findById(bookId);
     if (!book) {
@@ -100,6 +106,7 @@ const DeleteBook = (bookId, user) => __awaiter(void 0, void 0, void 0, function*
     const deletedBook = yield books_model_1.Books.findByIdAndDelete(bookId);
     return deletedBook;
 });
+//POST REVIEWS
 const PostReview = (id, user, reviewData) => __awaiter(void 0, void 0, void 0, function* () {
     const book = yield books_model_1.Books.findById(id);
     if (!book) {

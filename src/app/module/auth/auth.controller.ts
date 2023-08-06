@@ -26,7 +26,6 @@ const login = catchAsync(async (req: Request, res: Response) => {
 
   const { refreshToken, ...others } = result;
 
-  // set refresh token into cookie
   const cookieOptions = {
     secure: config.env === "production",
     httpOnly: true,
@@ -45,7 +44,6 @@ const refreshToken = catchAsync(async (req: Request, res: Response) => {
   const { refreshToken } = req.cookies;
   const result = await AuthService.RefreshToken(refreshToken);
 
-  // set refresh token into cookie
   const cookieOptions = {
     secure: config.env === "production",
     httpOnly: true,

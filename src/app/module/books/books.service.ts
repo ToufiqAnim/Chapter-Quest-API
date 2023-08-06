@@ -7,6 +7,7 @@ import {
 } from "./books.interface";
 import { Books } from "./books.model";
 
+//ADD BOOKS
 const AddBook = async (
   book: IBook,
   user: JwtPayload
@@ -17,6 +18,8 @@ const AddBook = async (
   }
   return newAddedBook;
 };
+
+//GET ALL BOOKS
 const GetAllBooks = async (filters: IBookFilters): Promise<IBook[]> => {
   const { searchTerm, ...filtersData } = filters;
   const andConditions = [];
@@ -42,6 +45,8 @@ const GetAllBooks = async (filters: IBookFilters): Promise<IBook[]> => {
   const result = await Books.find(whereConditions);
   return result;
 };
+
+//GET REVIEWS
 const GetReview = async (bookId: string): Promise<IReview[] | null> => {
   const book = await Books.findById(bookId).populate("reviews.reviewer");
   if (!book) {
@@ -56,6 +61,8 @@ const GetReview = async (bookId: string): Promise<IReview[] | null> => {
   }));
   return bookReviewer;
 };
+
+//GET SINGLE BOOK
 const GetSingleBook = async (bookId: string): Promise<IBook | null> => {
   const book = await Books.findById(bookId).populate({
     path: "reviews.reviewer",
@@ -68,6 +75,7 @@ const GetSingleBook = async (bookId: string): Promise<IBook | null> => {
   return book;
 };
 
+//UPDATE BOOK
 const UpdateBook = async (
   bookId: string,
 
@@ -88,6 +96,8 @@ const UpdateBook = async (
 
   return updatedBook;
 };
+
+//DELETE BOOK
 const DeleteBook = async (
   bookId: string,
   user: JwtPayload
@@ -102,6 +112,7 @@ const DeleteBook = async (
   return deletedBook;
 };
 
+//POST REVIEWS
 const PostReview = async (
   id: string,
   user: JwtPayload,

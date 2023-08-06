@@ -35,7 +35,6 @@ const Login = (payload) => __awaiter(void 0, void 0, void 0, function* () {
         !(yield user_model_1.Users.isPasswordMatched(password, isUserExist.password))) {
         throw new ApiError_1.default(http_status_1.default.NOT_FOUND, "Password is incorrect");
     }
-    // Create Access & Refresh Token
     const { _id, name, email: userEmail } = isUserExist;
     const accessToken = jwtHelpers_1.jwtHelpers.createToken({ _id, name, userEmail }, config_1.default.jwt.secret, config_1.default.jwt.secret_expires_in);
     const refreshToken = jwtHelpers_1.jwtHelpers.createToken({ _id, name, userEmail }, config_1.default.jwt.refresh, config_1.default.jwt.refresh_expires_in);
@@ -57,7 +56,6 @@ const RefreshToken = (token) => __awaiter(void 0, void 0, void 0, function* () {
     catch (err) {
         throw new ApiError_1.default(http_status_1.default.FORBIDDEN, "Invalid Refresh Token");
     }
-    // checking deleted user's refresh token
     const { userEmail } = verifiedToken;
     const isUserExist = yield user_model_1.Users.isUserExist(userEmail);
     if (!isUserExist) {

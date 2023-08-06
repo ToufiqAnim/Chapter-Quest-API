@@ -56,7 +56,7 @@ const GetSingleBook = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
-const UpdateBook: RequestHandler = async (req, res, next) => {
+const UpdateBook = catchAsync(async (req: Request, res: Response) => {
   if (!req.user || !req.body) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
@@ -71,8 +71,8 @@ const UpdateBook: RequestHandler = async (req, res, next) => {
     message: "Book updated successfully",
     data: result,
   });
-};
-const DeleteBook: RequestHandler = async (req, res, next) => {
+});
+const DeleteBook = catchAsync(async (req: Request, res: Response) => {
   if (!req.user || !req.body) {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
@@ -85,7 +85,7 @@ const DeleteBook: RequestHandler = async (req, res, next) => {
     message: "Selected Book deleted successfully!",
     data: result,
   });
-};
+});
 
 const AddReview = catchAsync(async (req: Request, res: Response) => {
   if (!req.user || !req.body) {
@@ -99,7 +99,7 @@ const AddReview = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IBook>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Add Review successfully",
+    message: "Review posted Successfully",
     data: result,
   });
 });

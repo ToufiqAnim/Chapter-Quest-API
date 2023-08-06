@@ -24,7 +24,7 @@ exports.UserService = void 0;
 const user_model_1 = require("./user.model");
 // user SECTION
 const GetAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
-    const allUsers = yield user_model_1.Users.find();
+    const allUsers = yield user_model_1.Users.find({});
     if (!allUsers) {
         throw new Error("No user found!");
     }

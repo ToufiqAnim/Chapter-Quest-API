@@ -63,7 +63,7 @@ const GetSingleBook = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 
         data: result,
     });
 }));
-const UpdateBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const UpdateBook = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.user || !req.body) {
         return res.sendStatus(http_status_1.default.BAD_REQUEST);
     }
@@ -76,8 +76,8 @@ const UpdateBook = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         message: "Book updated successfully",
         data: result,
     });
-});
-const DeleteBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+}));
+const DeleteBook = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.user || !req.body) {
         return res.sendStatus(http_status_1.default.BAD_REQUEST);
     }
@@ -89,7 +89,7 @@ const DeleteBook = (req, res, next) => __awaiter(void 0, void 0, void 0, functio
         message: "Selected Book deleted successfully!",
         data: result,
     });
-});
+}));
 const AddReview = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.user || !req.body) {
         return res.sendStatus(http_status_1.default.BAD_REQUEST);
@@ -101,7 +101,7 @@ const AddReview = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, v
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Add Review successfully",
+        message: "Review posted Successfully",
         data: result,
     });
 }));

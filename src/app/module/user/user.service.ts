@@ -4,7 +4,7 @@ import { Users } from "./user.model";
 
 // user SECTION
 const GetAllUsers = async (): Promise<IUser[] | null> => {
-  const allUsers = await Users.find();
+  const allUsers = await Users.find({});
   if (!allUsers) {
     throw new Error("No user found!");
   }

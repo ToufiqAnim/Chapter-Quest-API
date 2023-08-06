@@ -43,7 +43,6 @@ const login = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 
     const loginData = __rest(req.body, []);
     const result = yield auth_service_1.AuthService.Login(loginData);
     const { refreshToken } = result, others = __rest(result, ["refreshToken"]);
-    // set refresh token into cookie
     const cookieOptions = {
         secure: config_1.default.env === "production",
         httpOnly: true,
@@ -59,7 +58,6 @@ const login = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 
 const refreshToken = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const { refreshToken } = req.cookies;
     const result = yield auth_service_1.AuthService.RefreshToken(refreshToken);
-    // set refresh token into cookie
     const cookieOptions = {
         secure: config_1.default.env === "production",
         httpOnly: true,
