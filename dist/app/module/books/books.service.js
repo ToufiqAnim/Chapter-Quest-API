@@ -54,10 +54,25 @@ const GetAllBooks = (filters) => __awaiter(void 0, void 0, void 0, function* () 
     const result = yield books_model_1.Books.find(whereConditions);
     return result;
 });
+const GetReview = (bookId) => __awaiter(void 0, void 0, void 0, function* () {
+    const book = yield books_model_1.Books.findById(bookId).populate("reviews.reviewer");
+    if (!book) {
+        return null;
+    }
+    if (!book.reviews || book.reviews.length === 0) {
+        return null;
+    }
+    const bookReviewer = book.reviews.map((review) => ({
+        review: review.review,
+        reviewer: review.reviewer ? { name: review.reviewer.name } : null,
+    }));
+    return bookReviewer;
+});
 const GetSingleBook = (bookId) => __awaiter(void 0, void 0, void 0, function* () {
     const book = yield books_model_1.Books.findById(bookId).populate({
-        path: "reviews",
+        path: "reviews.reviewer",
         model: "User",
+        select: "name",
     });
     if (!book) {
         throw new Error("No book found!");
@@ -84,20 +99,6 @@ const DeleteBook = (bookId, user) => __awaiter(void 0, void 0, void 0, function*
     }
     const deletedBook = yield books_model_1.Books.findByIdAndDelete(bookId);
     return deletedBook;
-});
-const GetReview = (bookId) => __awaiter(void 0, void 0, void 0, function* () {
-    const book = yield books_model_1.Books.findById(bookId).populate("reviews.reviewer");
-    if (!book) {
-        return null;
-    }
-    if (!book.reviews || book.reviews.length === 0) {
-        return null;
-    }
-    const bookReviewer = book.reviews.map((review) => ({
-        review: review.review,
-        reviewer: review.reviewer ? { name: review.reviewer.name } : null,
-    }));
-    return bookReviewer;
 });
 const PostReview = (id, user, reviewData) => __awaiter(void 0, void 0, void 0, function* () {
     const book = yield books_model_1.Books.findById(id);

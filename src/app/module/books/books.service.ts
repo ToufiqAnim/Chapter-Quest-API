@@ -42,6 +42,20 @@ const GetAllBooks = async (filters: IBookFilters): Promise<IBook[]> => {
   const result = await Books.find(whereConditions);
   return result;
 };
+const GetReview = async (bookId: string): Promise<IReview[] | null> => {
+  const book = await Books.findById(bookId).populate("reviews.reviewer");
+  if (!book) {
+    return null;
+  }
+  if (!book.reviews || book.reviews.length === 0) {
+    return null;
+  }
+  const bookReviewer: IReview[] = book.reviews.map((review: any) => ({
+    review: review.review,
+    reviewer: review.reviewer ? { name: review.reviewer.name } : null,
+  }));
+  return bookReviewer;
+};
 const GetSingleBook = async (bookId: string): Promise<IBook | null> => {
   const book = await Books.findById(bookId).populate({
     path: "reviews.reviewer",
@@ -88,20 +102,6 @@ const DeleteBook = async (
   return deletedBook;
 };
 
-const GetReview = async (bookId: string): Promise<IReview[] | null> => {
-  const book = await Books.findById(bookId).populate("reviews.reviewer");
-  if (!book) {
-    return null;
-  }
-  if (!book.reviews || book.reviews.length === 0) {
-    return null;
-  }
-  const bookReviewer: IReview[] = book.reviews.map((review: any) => ({
-    review: review.review,
-    reviewer: review.reviewer ? { name: review.reviewer.name } : null,
-  }));
-  return bookReviewer;
-};
 const PostReview = async (
   id: string,
   user: JwtPayload,

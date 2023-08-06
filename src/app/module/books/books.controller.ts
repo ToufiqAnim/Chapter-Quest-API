@@ -34,19 +34,20 @@ const GetAllBooks = catchAsync(async (req: Request, res: Response) => {
     data: result,
   });
 });
-/* const GetSingleBook: RequestHandler = async (req, res, next) => {
+const GetReview = catchAsync(async (req: Request, res: Response) => {
   const bookId = req.params.bookId;
-  const result = await BookService.GetSingleBook(bookId);
-  sendResponse<IBook>(res, {
+  const result = await BookService.GetReview(bookId);
+
+  sendResponse<IReview[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: 'Book retrieved successfully',
+    message: "Review retrieved successfully",
     data: result,
   });
-}; */
+});
 const GetSingleBook = catchAsync(async (req: Request, res: Response) => {
-  const getBookId = req.params.getBookId;
-  const result = await BookService.GetSingleBook(getBookId);
+  const bookId = req.params.bookId;
+  const result = await BookService.GetSingleBook(bookId);
 
   sendResponse<IBook>(res, {
     statusCode: httpStatus.OK,
@@ -85,17 +86,7 @@ const DeleteBook: RequestHandler = async (req, res, next) => {
     data: result,
   });
 };
-const GetReview = catchAsync(async (req: Request, res: Response) => {
-  const bookId = req.params.bookId;
-  const result = await BookService.GetReview(bookId);
 
-  sendResponse<IReview[]>(res, {
-    statusCode: httpStatus.OK,
-    success: true,
-    message: "Review retrieved successfully",
-    data: result,
-  });
-});
 const AddReview = catchAsync(async (req: Request, res: Response) => {
   if (!req.user || !req.body) {
     return res.sendStatus(httpStatus.BAD_REQUEST);

@@ -43,15 +43,26 @@ const GetAllBooks = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0,
         data: result,
     });
 }));
-const GetSingleBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
+const GetReview = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const bookId = req.params.bookId;
-    const result = yield books_service_1.BookService.GetSingleBook(bookId);
-    res.status(200).json({
+    const result = yield books_service_1.BookService.GetReview(bookId);
+    (0, sendResonse_1.sendResponse)(res, {
+        statusCode: http_status_1.default.OK,
         success: true,
-        message: "Book retrieved successfully!",
+        message: "Review retrieved successfully",
         data: result,
     });
-});
+}));
+const GetSingleBook = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const bookId = req.params.bookId;
+    const result = yield books_service_1.BookService.GetSingleBook(bookId);
+    (0, sendResonse_1.sendResponse)(res, {
+        statusCode: http_status_1.default.OK,
+        success: true,
+        message: "Book retrieved successfully",
+        data: result,
+    });
+}));
 const UpdateBook = (req, res, next) => __awaiter(void 0, void 0, void 0, function* () {
     if (!req.user || !req.body) {
         return res.sendStatus(http_status_1.default.BAD_REQUEST);
@@ -91,16 +102,6 @@ const AddReview = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, v
         statusCode: http_status_1.default.OK,
         success: true,
         message: "Add Review successfully",
-        data: result,
-    });
-}));
-const GetReview = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const bookId = req.params.bookId;
-    const result = yield books_service_1.BookService.GetReview(bookId);
-    (0, sendResonse_1.sendResponse)(res, {
-        statusCode: http_status_1.default.OK,
-        success: true,
-        message: "Review retrieved successfully",
         data: result,
     });
 }));
