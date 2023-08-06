@@ -134,46 +134,46 @@ const RemoveFromReadingList = async (
   );
 };
 const AddToFinishedBook = async (
-  finishedBookId: string,
+  bookId: string,
   user: JwtPayload
 ): Promise<void> => {
   const { _id } = user;
-  const userInfo = await Users.findById(_id);
+  const userProfile = await Users.findById(_id);
 
-  if (!userInfo) {
+  if (!userProfile) {
     throw new Error("User not found");
   }
 
-  if (userInfo.finishedBooks.includes(finishedBookId)) {
+  if (userProfile.finishedBooks.includes(bookId)) {
     throw new Error("Book already exists in the Finished Book List");
   }
 
-  const bookIndex = userInfo.readingList.indexOf(finishedBookId);
+  const bookIndex = userProfile.readingList.indexOf(bookId);
   if (bookIndex !== -1) {
-    userInfo.readingList.splice(bookIndex, 1);
+    userProfile.readingList.splice(bookIndex, 1);
   }
 
-  userInfo.finishedBooks.push(finishedBookId);
-  await userInfo.save();
+  userProfile.finishedBooks.push(bookId);
+  await userProfile.save();
 };
 
 const GetFinishedBooks = async (user: JwtPayload): Promise<string[]> => {
-  const userInfo = await Users.findById(user._id).populate("finishedBooks");
+  const userProfile = await Users.findById(user._id).populate("finishedBooks");
 
-  if (!userInfo) {
+  if (!userProfile) {
     throw new Error("User not found");
   }
 
-  return userInfo.finishedBooks;
+  return userProfile.finishedBooks;
 };
 
 const RemoveFinishedBooks = async (
   user: JwtPayload,
-  removeFBookId: string
+  bookId: string
 ): Promise<void> => {
   await Users.findOneAndUpdate(
     { _id: user._id },
-    { $pull: { finishedBooks: removeFBookId } },
+    { $pull: { finishedBooks: bookId } },
     { new: true }
   );
 };
