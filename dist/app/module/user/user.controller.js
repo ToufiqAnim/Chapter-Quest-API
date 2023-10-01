@@ -22,7 +22,7 @@ const GetUsers = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, vo
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Users retrieved successfully",
+        message: 'Users retrieved successfully',
         data: result,
     });
 }));
@@ -32,7 +32,7 @@ const GetUserById = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0,
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "User retrieved successfully",
+        message: 'User retrieved successfully',
         data: result,
     });
 }));
@@ -43,7 +43,7 @@ const UpdateUser = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, 
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "User updated successfully",
+        message: 'User updated successfully',
         data: result,
     });
 }));
@@ -53,7 +53,7 @@ const DeleteUser = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, 
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "User deleted successfully",
+        message: 'User deleted successfully',
     });
 }));
 const GetUserProfile = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -79,7 +79,7 @@ const AddToWishlist = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Book added to wishlist successfully",
+        message: 'Book added to wishlist successfully',
     });
 }));
 const GetWishlist = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -91,7 +91,7 @@ const GetWishlist = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0,
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Book retrieved successfully from Wishlist",
+        message: 'Book retrieved successfully from Wishlist',
         data: result,
     });
 }));
@@ -105,7 +105,7 @@ const RemoveFromWishlist = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Book  removed successfully from Wishlist",
+        message: 'Book  removed successfully from Wishlist',
     });
 }));
 const AddToReadingList = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -118,7 +118,7 @@ const AddToReadingList = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(vo
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Book added to Reading List successfully",
+        message: 'Book added to Reading List successfully',
     });
 }));
 const GetReadingList = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -127,10 +127,11 @@ const GetReadingList = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void
     }
     const user = req.user;
     const result = yield user_service_1.UserService.GetReadingLists(user);
+    console.log(result);
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Book retrieved successfully from Reading List",
+        message: 'Book retrieved successfully from Reading List',
         data: result,
     });
 }));
@@ -143,14 +144,14 @@ const RemoveFromReadingList = (0, catchAsync_1.catchAsync)((req, res) => __await
     if (!bookId) {
         return res.status(400).json({
             success: false,
-            message: "Invalid bookId provided.",
+            message: 'Invalid bookId provided.',
         });
     }
     yield user_service_1.UserService.RemoveFromReadingList(user, bookId);
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Book successfully remove from Reading List",
+        message: 'Book successfully remove from Reading List',
     });
 }));
 const AddToFinishedBook = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -163,7 +164,7 @@ const AddToFinishedBook = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(v
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Book added to Finished Book List successfully",
+        message: 'Book added to Finished Book List successfully',
     });
 }));
 const GetFinishedBooks = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -175,7 +176,7 @@ const GetFinishedBooks = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(vo
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Book retrieved successfully from Finished Book List",
+        message: 'Book retrieved successfully from Finished Book List',
         data: result,
     });
 }));
@@ -189,7 +190,7 @@ const RemoveFinishedBooks = (0, catchAsync_1.catchAsync)((req, res) => __awaiter
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Book successfully remove from Finished Books List",
+        message: 'Book successfully remove from Finished Books List',
     });
 }));
 exports.UserController = {

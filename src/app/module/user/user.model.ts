@@ -1,7 +1,7 @@
-import { Schema, model } from "mongoose";
-import config from "../../../config";
-import { IFindUser, IUser, UserModel } from "./user.interface";
-import bcrypt from "bcrypt";
+import { Schema, model } from 'mongoose';
+import config from '../../../config';
+import { IFindUser, IUser, UserModel } from './user.interface';
+import bcrypt from 'bcrypt';
 
 const UserSchema = new Schema<IUser, UserModel>(
   {
@@ -18,9 +18,9 @@ const UserSchema = new Schema<IUser, UserModel>(
       type: String,
       required: true,
     },
-    wishlist: [{ type: Schema.Types.ObjectId, default: [], ref: "Books" }],
-    readingList: [{ type: Schema.Types.ObjectId, default: [], ref: "Books" }],
-    finishedBooks: [{ type: Schema.Types.ObjectId, default: [], ref: "Books" }],
+    wishlist: [{ type: Schema.Types.ObjectId, default: [], ref: 'Books' }],
+    readingList: [{ type: Schema.Types.ObjectId, default: [], ref: 'Books' }],
+    finishedBooks: [{ type: Schema.Types.ObjectId, default: [], ref: 'Books' }],
   },
   {
     toJSON: {
@@ -35,7 +35,7 @@ const UserSchema = new Schema<IUser, UserModel>(
 
 UserSchema.statics.isUserExist = async function (
   email: string
-): Promise<Pick<IFindUser, "_id" | "email" | "password"> | null> {
+): Promise<Pick<IFindUser, '_id' | 'email' | 'password'> | null> {
   return await Users.findOne(
     { email },
     { _id: 1, name: 1, email: 1, password: 1 }
@@ -49,8 +49,8 @@ UserSchema.statics.isPasswordMatched = async function (
   return await bcrypt.compare(givenPassword, savedPassword);
 };
 
-UserSchema.pre("save", async function (next) {
-  if (!this.isModified("password")) {
+UserSchema.pre('save', async function (next) {
+  if (!this.isModified('password')) {
     return next();
   }
 
@@ -61,4 +61,4 @@ UserSchema.pre("save", async function (next) {
   next();
 });
 
-export const Users = model<IUser, UserModel>("User", UserSchema);
+export const Users = model<IUser, UserModel>('User', UserSchema);

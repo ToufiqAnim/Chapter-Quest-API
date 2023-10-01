@@ -1,5 +1,5 @@
-import jwt, { JwtPayload as JwtPayload, Secret } from "jsonwebtoken";
-import config from "../config";
+import jwt, { JwtPayload as JwtPayload, Secret } from 'jsonwebtoken';
+import config from '../config';
 
 const createToken = (
   payload: Record<string, unknown>,

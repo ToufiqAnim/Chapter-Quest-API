@@ -8,19 +8,13 @@ const router = express.Router();
 router.post(
   '/login',
   validateRequest(AuthValidation.createAuthZodSchema),
-  AuthController.login
+  AuthController.loginUser
 );
 
 router.post(
   '/signup',
   validateRequest(AuthValidation.createUserZodSchema),
-  AuthController.signup
-);
-
-router.post(
-  '/refresh-token',
-  validateRequest(AuthValidation.refreshTokenZodSchema),
-  AuthController.refreshToken
+  AuthController.signUpUser
 );
 
 export const AuthRoutes = router;

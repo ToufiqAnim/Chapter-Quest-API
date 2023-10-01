@@ -5,65 +5,45 @@ import { UserController } from './user.controller';
 const router = express.Router();
 
 // Bonus part
-// router.get('/wishlist', auth(), UserController.GetWishlist);
-// router.get('/readingList', auth(), UserController.GetReadingList);
-// router.get('/finishedBooks', auth(), UserController.GetFinishedBooks);
-// router.post('/addToWishlist/:bookId', auth(), UserController.AddToWishlist);
+router.get('/wishlist', auth(), UserController.GetWishlist);
+router.get('/readingList', UserController.GetReadingList);
+router.get('/finishedBooks', auth(), UserController.GetFinishedBooks);
+router.post('/addToWishlist/:bookId', auth(), UserController.AddToWishlist);
 router.post(
   '/addToReadingList/:bookId',
-  // auth(),
+  auth(),
   UserController.AddToReadingList
 );
 router.post(
   '/addToFinishedBook/:bookId',
-  // auth(),
+  auth(),
   UserController.AddToFinishedBook
 );
 
 router.post(
   '/removeFromWishlist/:bookId',
-  // auth(),
+  auth(),
   UserController.RemoveFromWishlist
 );
 
 router.post(
   '/removeFromReadingList/:bookId',
-  // auth(),
+  auth(),
   UserController.RemoveFromReadingList
 );
 
 router.post(
   '/removeFromFinishedBooks/:bookId',
-  // auth(),
+  auth(),
   UserController.RemoveFinishedBooks
 );
 
 //user
-router.get(
-  '/:id',
-  //  auth(),
-  UserController.GetUserById
-);
-router.patch(
-  '/:id',
-  //  auth(),
-  UserController.UpdateUser
-);
-router.delete(
-  '/:id',
-  // auth(),
-  UserController.DeleteUser
-);
+router.get('/:id', auth(), UserController.GetUserById);
+router.patch('/:id', auth(), UserController.UpdateUser);
+router.delete('/:id', auth(), UserController.DeleteUser);
 
-router.get(
-  '/',
-  // auth(),
-  UserController.GetUsers
-);
-router.get(
-  '/my-profile',
-  //  auth(),
-  UserController.GetUserProfile
-);
+router.get('/', UserController.GetUsers);
+router.get('/my-profile', auth(), UserController.GetUserProfile);
 
 export const UserRoutes = router;

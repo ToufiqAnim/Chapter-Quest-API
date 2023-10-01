@@ -1,9 +1,9 @@
-import { Request, Response } from "express";
-import { catchAsync } from "../../../shared/catchAsync";
-import { sendResponse } from "../../../shared/sendResonse";
-import { IUser } from "./user.interface";
-import httpStatus from "http-status";
-import { UserService } from "./user.service";
+import { Request, Response } from 'express';
+import { catchAsync } from '../../../shared/catchAsync';
+import { sendResponse } from '../../../shared/sendResonse';
+import { IUser } from './user.interface';
+import httpStatus from 'http-status';
+import { UserService } from './user.service';
 
 const GetUsers = catchAsync(async (req: Request, res: Response) => {
   const result = await UserService.GetAllUsers();
@@ -11,7 +11,7 @@ const GetUsers = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IUser[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Users retrieved successfully",
+    message: 'Users retrieved successfully',
     data: result,
   });
 });
@@ -23,7 +23,7 @@ const GetUserById = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IUser>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "User retrieved successfully",
+    message: 'User retrieved successfully',
     data: result,
   });
 });
@@ -36,7 +36,7 @@ const UpdateUser = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IUser>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "User updated successfully",
+    message: 'User updated successfully',
     data: result,
   });
 });
@@ -48,7 +48,7 @@ const DeleteUser = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IUser>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "User deleted successfully",
+    message: 'User deleted successfully',
   });
 });
 
@@ -77,7 +77,7 @@ const AddToWishlist = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IUser>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Book added to wishlist successfully",
+    message: 'Book added to wishlist successfully',
   });
 });
 
@@ -91,7 +91,7 @@ const GetWishlist = catchAsync(async (req: Request, res: Response) => {
   sendResponse<string[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Book retrieved successfully from Wishlist",
+    message: 'Book retrieved successfully from Wishlist',
     data: result,
   });
 });
@@ -107,7 +107,7 @@ const RemoveFromWishlist = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Book  removed successfully from Wishlist",
+    message: 'Book  removed successfully from Wishlist',
   });
 });
 
@@ -122,7 +122,7 @@ const AddToReadingList = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IUser>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Book added to Reading List successfully",
+    message: 'Book added to Reading List successfully',
   });
 });
 
@@ -132,11 +132,12 @@ const GetReadingList = catchAsync(async (req: Request, res: Response) => {
   }
   const user = req.user;
   const result = await UserService.GetReadingLists(user);
+  console.log(result);
 
   sendResponse<string[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Book retrieved successfully from Reading List",
+    message: 'Book retrieved successfully from Reading List',
     data: result,
   });
 });
@@ -151,7 +152,7 @@ const RemoveFromReadingList = catchAsync(
     if (!bookId) {
       return res.status(400).json({
         success: false,
-        message: "Invalid bookId provided.",
+        message: 'Invalid bookId provided.',
       });
     }
     await UserService.RemoveFromReadingList(user, bookId);
@@ -159,7 +160,7 @@ const RemoveFromReadingList = catchAsync(
     sendResponse(res, {
       statusCode: httpStatus.OK,
       success: true,
-      message: "Book successfully remove from Reading List",
+      message: 'Book successfully remove from Reading List',
     });
   }
 );
@@ -174,7 +175,7 @@ const AddToFinishedBook = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IUser>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Book added to Finished Book List successfully",
+    message: 'Book added to Finished Book List successfully',
   });
 });
 
@@ -188,7 +189,7 @@ const GetFinishedBooks = catchAsync(async (req: Request, res: Response) => {
   sendResponse<string[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Book retrieved successfully from Finished Book List",
+    message: 'Book retrieved successfully from Finished Book List',
     data: result,
   });
 });
@@ -204,7 +205,7 @@ const RemoveFinishedBooks = catchAsync(async (req: Request, res: Response) => {
   sendResponse(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Book successfully remove from Finished Books List",
+    message: 'Book successfully remove from Finished Books List',
   });
 });
 export const UserController = {

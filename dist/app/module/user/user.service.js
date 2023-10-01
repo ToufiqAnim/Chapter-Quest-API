@@ -26,14 +26,14 @@ const user_model_1 = require("./user.model");
 const GetAllUsers = () => __awaiter(void 0, void 0, void 0, function* () {
     const allUsers = yield user_model_1.Users.find({});
     if (!allUsers) {
-        throw new Error("No user found!");
+        throw new Error('No user found!');
     }
     return allUsers;
 });
 const GetUserById = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const user = yield user_model_1.Users.findById(id);
     if (!user) {
-        throw new Error("No user found!");
+        throw new Error('No user found!');
     }
     return user;
 });
@@ -41,10 +41,10 @@ const UpdateUser = (id, payload) => __awaiter(void 0, void 0, void 0, function* 
     const { email } = payload, updatePayload = __rest(payload, ["email"]);
     const user = yield user_model_1.Users.findById(id);
     if (!user) {
-        throw new Error("No user found!");
+        throw new Error('No user found!');
     }
     if (email && email !== user.email) {
-        throw new Error("Updating email is not allowed!");
+        throw new Error('Updating email is not allowed!');
     }
     Object.assign(user, updatePayload);
     const updateduser = yield user.save();
@@ -53,11 +53,12 @@ const UpdateUser = (id, payload) => __awaiter(void 0, void 0, void 0, function* 
 const DeleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
     const deleteduser = yield user_model_1.Users.findByIdAndDelete(id);
     if (!deleteduser) {
-        throw new Error("No user found!");
+        throw new Error('No user found!');
     }
 });
 const GetUserProfile = (user) => __awaiter(void 0, void 0, void 0, function* () {
     const { _id } = user;
+    console.log(user);
     const userProfile = yield user_model_1.Users.findById(_id).exec();
     return userProfile;
 });
@@ -65,18 +66,18 @@ const AddToWishlist = (bookId, user) => __awaiter(void 0, void 0, void 0, functi
     const { _id } = user;
     const userProfile = yield user_model_1.Users.findById(_id);
     if (!userProfile) {
-        throw new Error("User not found");
+        throw new Error('User not found');
     }
     if (userProfile.wishlist.includes(bookId)) {
-        throw new Error("Book already exists in the wishlist");
+        throw new Error('Book already exists in the wishlist');
     }
     userProfile.wishlist.push(bookId);
     yield userProfile.save();
 });
 const GetWishlists = (user) => __awaiter(void 0, void 0, void 0, function* () {
-    const userProfile = yield user_model_1.Users.findById(user._id).populate("wishlist");
+    const userProfile = yield user_model_1.Users.findById(user._id).populate('wishlist');
     if (!userProfile) {
-        throw new Error("User not found");
+        throw new Error('User not found');
     }
     return userProfile.wishlist;
 });
@@ -87,10 +88,10 @@ const AddToReadingList = (bookId, user) => __awaiter(void 0, void 0, void 0, fun
     const { _id } = user;
     const userProfile = yield user_model_1.Users.findById(_id);
     if (!userProfile) {
-        throw new Error("User not found");
+        throw new Error('User not found');
     }
     if (userProfile.readingList.includes(bookId)) {
-        throw new Error("Book already exists in the Reading List");
+        throw new Error('Book already exists in the Reading List');
     }
     const bookIndex = userProfile.wishlist.indexOf(bookId);
     if (bookIndex !== -1) {
@@ -100,10 +101,11 @@ const AddToReadingList = (bookId, user) => __awaiter(void 0, void 0, void 0, fun
     yield userProfile.save();
 });
 const GetReadingLists = (user) => __awaiter(void 0, void 0, void 0, function* () {
-    const userProfile = yield user_model_1.Users.findById(user._id).populate("readingList");
+    const userProfile = yield user_model_1.Users.findById(user._id).populate('readingList');
     if (!userProfile) {
-        throw new Error("User not found");
+        throw new Error('User not found');
     }
+    console.log(userProfile);
     return userProfile.readingList;
 });
 const RemoveFromReadingList = (user, bookId) => __awaiter(void 0, void 0, void 0, function* () {
@@ -113,10 +115,10 @@ const AddToFinishedBook = (bookId, user) => __awaiter(void 0, void 0, void 0, fu
     const { _id } = user;
     const userProfile = yield user_model_1.Users.findById(_id);
     if (!userProfile) {
-        throw new Error("User not found");
+        throw new Error('User not found');
     }
     if (userProfile.finishedBooks.includes(bookId)) {
-        throw new Error("Book already exists in the Finished Book List");
+        throw new Error('Book already exists in the Finished Book List');
     }
     const bookIndex = userProfile.readingList.indexOf(bookId);
     if (bookIndex !== -1) {
@@ -126,9 +128,9 @@ const AddToFinishedBook = (bookId, user) => __awaiter(void 0, void 0, void 0, fu
     yield userProfile.save();
 });
 const GetFinishedBooks = (user) => __awaiter(void 0, void 0, void 0, function* () {
-    const userProfile = yield user_model_1.Users.findById(user._id).populate("finishedBooks");
+    const userProfile = yield user_model_1.Users.findById(user._id).populate('finishedBooks');
     if (!userProfile) {
-        throw new Error("User not found");
+        throw new Error('User not found');
     }
     return userProfile.finishedBooks;
 });

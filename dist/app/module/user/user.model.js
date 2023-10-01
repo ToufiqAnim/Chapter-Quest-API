@@ -30,9 +30,9 @@ const UserSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
-    wishlist: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: "Books" }],
-    readingList: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: "Books" }],
-    finishedBooks: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: "Books" }],
+    wishlist: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: 'Books' }],
+    readingList: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: 'Books' }],
+    finishedBooks: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: 'Books' }],
 }, {
     toJSON: {
         transform(_doc, ret) {
@@ -52,13 +52,13 @@ UserSchema.statics.isPasswordMatched = function (givenPassword, savedPassword) {
         return yield bcrypt_1.default.compare(givenPassword, savedPassword);
     });
 };
-UserSchema.pre("save", function (next) {
+UserSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {
-        if (!this.isModified("password")) {
+        if (!this.isModified('password')) {
             return next();
         }
         this.password = yield bcrypt_1.default.hash(this.password, Number(config_1.default.bcrypt_salt_round));
         next();
     });
 });
-exports.Users = (0, mongoose_1.model)("User", UserSchema);
+exports.Users = (0, mongoose_1.model)('User', UserSchema);
