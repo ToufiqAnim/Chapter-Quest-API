@@ -6,19 +6,19 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const express_1 = __importDefault(require("express"));
 const book_routes_1 = require("../module/books/book.routes");
 const auth_route_1 = require("../module/auth/auth.route");
-const user_route_1 = require("../module/user/user.route");
+const user_routes_1 = require("../module/user/user.routes");
 const router = express_1.default.Router();
 const moduleRoutes = [
     {
-        path: "/auth",
+        path: '/auth',
         route: auth_route_1.AuthRoutes,
     },
     {
-        path: "/users",
-        route: user_route_1.UserRoutes,
+        path: '/users',
+        route: user_routes_1.UserRoutes,
     },
     {
-        path: "/books",
+        path: '/books',
         route: book_routes_1.BookRoutes,
     },
 ];

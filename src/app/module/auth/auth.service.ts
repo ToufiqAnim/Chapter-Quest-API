@@ -1,16 +1,22 @@
-import httpStatus from "http-status";
-import { IUser } from "../user/user.interface";
-import { Users } from "../user/user.model";
-import { ILogin, ILoginResponse } from "./auth.interface";
-import ApiError from "../../../errors/ApiError";
-import { jwtHelpers } from "../../../helpers/jwtHelpers";
-import config from "../../../config";
-import { Secret } from "jsonwebtoken";
+import httpStatus from 'http-status';
+import { IUser } from '../user/user.interface';
+import { Users } from '../user/user.model';
+import { ILogin, ILoginResponse } from './auth.interface';
+import ApiError from '../../../errors/ApiError';
+import { jwtHelpers } from '../../../helpers/jwtHelpers';
+import config from '../../../config';
+import { Secret } from 'jsonwebtoken';
 
 const CreateUser = async (user: IUser): Promise<IUser | null> => {
+  const isExist = await Users.findOne({
+    email: user.email,
+  });
+  if (isExist) {
+    throw new ApiError(httpStatus.BAD_REQUEST, 'User Already exists!');
+  }
   const createUser = await Users.create(user);
   if (!createUser) {
-    throw new Error("Failed to create user!");
+    throw new Error('Failed to create user!');
   }
   return createUser;
 };
@@ -18,15 +24,15 @@ const CreateUser = async (user: IUser): Promise<IUser | null> => {
 const Login = async (payload: ILogin): Promise<ILoginResponse> => {
   const { email, password } = payload;
 
-  const isUserExist = await Users.isUserExist(email);
+  const isUserExist = await Users.findOne({ email });
   if (!isUserExist) {
-    throw new ApiError(httpStatus.NOT_FOUND, "User not found");
+    throw new ApiError(httpStatus.NOT_FOUND, 'User not found');
   }
   if (
     isUserExist.password &&
     !(await Users.isPasswordMatched(password, isUserExist.password))
   ) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Password is incorrect");
+    throw new ApiError(httpStatus.NOT_FOUND, 'Password is incorrect');
   }
 
   const { _id, name, email: userEmail } = isUserExist;
@@ -60,14 +66,14 @@ const RefreshToken = async (token: string) => {
   try {
     verifiedToken = jwtHelpers.verifyToken(token, config.jwt.refresh as Secret);
   } catch (err) {
-    throw new ApiError(httpStatus.FORBIDDEN, "Invalid Refresh Token");
+    throw new ApiError(httpStatus.FORBIDDEN, 'Invalid Refresh Token');
   }
 
   const { userEmail } = verifiedToken;
 
   const isUserExist = await Users.isUserExist(userEmail);
   if (!isUserExist) {
-    const error = new ApiError(httpStatus.FORBIDDEN, "User not exist");
+    const error = new ApiError(httpStatus.FORBIDDEN, 'User not exist');
     return error;
   }
 

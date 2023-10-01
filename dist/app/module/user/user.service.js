@@ -109,31 +109,31 @@ const GetReadingLists = (user) => __awaiter(void 0, void 0, void 0, function* ()
 const RemoveFromReadingList = (user, bookId) => __awaiter(void 0, void 0, void 0, function* () {
     yield user_model_1.Users.findOneAndUpdate({ _id: user._id }, { $pull: { readingList: bookId } }, { new: true });
 });
-const AddToFinishedBook = (finishedBookId, user) => __awaiter(void 0, void 0, void 0, function* () {
+const AddToFinishedBook = (bookId, user) => __awaiter(void 0, void 0, void 0, function* () {
     const { _id } = user;
-    const userInfo = yield user_model_1.Users.findById(_id);
-    if (!userInfo) {
+    const userProfile = yield user_model_1.Users.findById(_id);
+    if (!userProfile) {
         throw new Error("User not found");
     }
-    if (userInfo.finishedBooks.includes(finishedBookId)) {
+    if (userProfile.finishedBooks.includes(bookId)) {
         throw new Error("Book already exists in the Finished Book List");
     }
-    const bookIndex = userInfo.readingList.indexOf(finishedBookId);
+    const bookIndex = userProfile.readingList.indexOf(bookId);
     if (bookIndex !== -1) {
-        userInfo.readingList.splice(bookIndex, 1);
+        userProfile.readingList.splice(bookIndex, 1);
     }
-    userInfo.finishedBooks.push(finishedBookId);
-    yield userInfo.save();
+    userProfile.finishedBooks.push(bookId);
+    yield userProfile.save();
 });
 const GetFinishedBooks = (user) => __awaiter(void 0, void 0, void 0, function* () {
-    const userInfo = yield user_model_1.Users.findById(user._id).populate("finishedBooks");
-    if (!userInfo) {
+    const userProfile = yield user_model_1.Users.findById(user._id).populate("finishedBooks");
+    if (!userProfile) {
         throw new Error("User not found");
     }
-    return userInfo.finishedBooks;
+    return userProfile.finishedBooks;
 });
-const RemoveFinishedBooks = (user, removeFBookId) => __awaiter(void 0, void 0, void 0, function* () {
-    yield user_model_1.Users.findOneAndUpdate({ _id: user._id }, { $pull: { finishedBooks: removeFBookId } }, { new: true });
+const RemoveFinishedBooks = (user, bookId) => __awaiter(void 0, void 0, void 0, function* () {
+    yield user_model_1.Users.findOneAndUpdate({ _id: user._id }, { $pull: { finishedBooks: bookId } }, { new: true });
 });
 exports.UserService = {
     GetAllUsers,

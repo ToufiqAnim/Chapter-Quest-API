@@ -1,6 +1,7 @@
-import { Model, Types } from "mongoose";
+import { Model, Types } from 'mongoose';
 
 export type IUser = {
+  _id?: Types.ObjectId;
   name: string;
   email: string;
   password: string;
@@ -19,7 +20,7 @@ export type IFindUser = {
 export type UserModel = {
   isUserExist(
     email: string
-  ): Promise<Pick<IFindUser, "_id" | "name" | "email" | "password">>;
+  ): Promise<Pick<IFindUser, '_id' | 'name' | 'email' | 'password'>>;
   isPasswordMatched(
     givenPassword: string,
     savedPassword: string

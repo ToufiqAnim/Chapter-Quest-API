@@ -1,21 +1,21 @@
-import express from "express";
-import { BookRoutes } from "../module/books/book.routes";
-import { AuthRoutes } from "../module/auth/auth.route";
-import { UserRoutes } from "../module/user/user.route";
+import express from 'express';
+import { BookRoutes } from '../module/books/book.routes';
+import { AuthRoutes } from '../module/auth/auth.route';
+import { UserRoutes } from '../module/user/user.routes';
 
 const router = express.Router();
 
 const moduleRoutes = [
   {
-    path: "/auth",
+    path: '/auth',
     route: AuthRoutes,
   },
   {
-    path: "/users",
+    path: '/users',
     route: UserRoutes,
   },
   {
-    path: "/books",
+    path: '/books',
     route: BookRoutes,
   },
 ];

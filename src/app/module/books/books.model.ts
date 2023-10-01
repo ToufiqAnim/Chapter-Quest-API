@@ -1,5 +1,5 @@
-import { Schema, model } from "mongoose";
-import { BookModel, IBook } from "./books.interface";
+import { Schema, model } from 'mongoose';
+import { BookModel, IBook } from './books.interface';
 
 const BookSchema = new Schema<IBook>(
   {
@@ -29,7 +29,7 @@ const BookSchema = new Schema<IBook>(
     },
     publisher: {
       type: Schema.Types.ObjectId,
-      ref: "User",
+      ref: 'User',
     },
     reviews: [
       {
@@ -38,7 +38,7 @@ const BookSchema = new Schema<IBook>(
         },
         reviewer: {
           type: Schema.Types.ObjectId,
-          ref: "User",
+          ref: 'User',
         },
       },
     ],
@@ -48,4 +48,4 @@ const BookSchema = new Schema<IBook>(
   }
 );
 
-export const Books = model<IBook, BookModel>("Books", BookSchema);
+export const Books = model<IBook, BookModel>('Books', BookSchema);

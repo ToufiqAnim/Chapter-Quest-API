@@ -1,11 +1,11 @@
-import { JwtPayload } from "jsonwebtoken";
+import { JwtPayload } from 'jsonwebtoken';
 import {
   IBook,
   IBookFilters,
   IReview,
   bookSearchableFields,
-} from "./books.interface";
-import { Books } from "./books.model";
+} from './books.interface';
+import { Books } from './books.model';
 
 //ADD BOOKS
 const AddBook = async (
@@ -14,7 +14,7 @@ const AddBook = async (
 ): Promise<IBook | null> => {
   const newAddedBook = await Books.create({ ...book, publisher: user._id });
   if (!newAddedBook) {
-    throw new Error("Failed to create book!");
+    throw new Error('Failed to create book!');
   }
   return newAddedBook;
 };
@@ -28,7 +28,7 @@ const GetAllBooks = async (filters: IBookFilters): Promise<IBook[]> => {
       $or: bookSearchableFields.map((field) => ({
         [field]: {
           $regex: searchTerm,
-          $options: "i",
+          $options: 'i',
         },
       })),
     });
@@ -48,7 +48,7 @@ const GetAllBooks = async (filters: IBookFilters): Promise<IBook[]> => {
 
 //GET REVIEWS
 const GetReview = async (bookId: string): Promise<IReview[] | null> => {
-  const book = await Books.findById(bookId).populate("reviews.reviewer");
+  const book = await Books.findById(bookId).populate('reviews.reviewer');
   if (!book) {
     return null;
   }
@@ -65,12 +65,12 @@ const GetReview = async (bookId: string): Promise<IReview[] | null> => {
 //GET SINGLE BOOK
 const GetSingleBook = async (bookId: string): Promise<IBook | null> => {
   const book = await Books.findById(bookId).populate({
-    path: "reviews.reviewer",
-    model: "User",
-    select: "name",
+    path: 'reviews.reviewer',
+    model: 'User',
+    select: 'name',
   });
   if (!book) {
-    throw new Error("No book found!");
+    throw new Error('No book found!');
   }
   return book;
 };
@@ -83,7 +83,7 @@ const UpdateBook = async (
 ): Promise<IBook | null> => {
   const book = await Books.findById(bookId);
   if (!book) {
-    throw new Error("No Book Found!!");
+    throw new Error('No Book Found!!');
   }
 
   const updatedBook = await Books.findByIdAndUpdate(bookId, payload, {
@@ -91,7 +91,7 @@ const UpdateBook = async (
   });
 
   if (!updatedBook) {
-    throw new Error("Failed to update book!");
+    throw new Error('Failed to update book!');
   }
 
   return updatedBook;
@@ -105,7 +105,7 @@ const DeleteBook = async (
   const book = await Books.findById(bookId);
 
   if (!book) {
-    throw new Error("No book found!");
+    throw new Error('No book found!');
   }
 
   const deletedBook = await Books.findByIdAndDelete(bookId);
@@ -121,11 +121,11 @@ const PostReview = async (
   const book = await Books.findById(id);
 
   if (!book) {
-    throw new Error("No book found!");
+    throw new Error('No book found!');
   }
 
   const review =
-    typeof reviewData === "string" ? reviewData : reviewData.review;
+    typeof reviewData === 'string' ? reviewData : reviewData.review;
 
   const newReview: IReview = {
     review: review,

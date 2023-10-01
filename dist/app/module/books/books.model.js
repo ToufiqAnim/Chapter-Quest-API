@@ -29,7 +29,7 @@ const BookSchema = new mongoose_1.Schema({
     },
     publisher: {
         type: mongoose_1.Schema.Types.ObjectId,
-        ref: "User",
+        ref: 'User',
     },
     reviews: [
         {
@@ -38,11 +38,11 @@ const BookSchema = new mongoose_1.Schema({
             },
             reviewer: {
                 type: mongoose_1.Schema.Types.ObjectId,
-                ref: "User",
+                ref: 'User',
             },
         },
     ],
 }, {
     timestamps: true,
 });
-exports.Books = (0, mongoose_1.model)("Books", BookSchema);
+exports.Books = (0, mongoose_1.model)('Books', BookSchema);
