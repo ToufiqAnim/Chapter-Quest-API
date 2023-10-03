@@ -141,12 +141,6 @@ const RemoveFromReadingList = (0, catchAsync_1.catchAsync)((req, res) => __await
     }
     const user = req.user;
     const bookId = req.params.bookId;
-    if (!bookId) {
-        return res.status(400).json({
-            success: false,
-            message: 'Invalid bookId provided.',
-        });
-    }
     yield user_service_1.UserService.RemoveFromReadingList(user, bookId);
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
@@ -158,9 +152,9 @@ const AddToFinishedBook = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(v
     if (!req.user || !req.body) {
         return res.sendStatus(http_status_1.default.BAD_REQUEST);
     }
-    const finishedBookId = req.params.finishedBookId;
     const user = req.user;
-    yield user_service_1.UserService.AddToFinishedBook(finishedBookId, user);
+    const bookId = req.params.bookId;
+    yield user_service_1.UserService.AddToFinishedBook(bookId, user);
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
@@ -185,8 +179,8 @@ const RemoveFinishedBooks = (0, catchAsync_1.catchAsync)((req, res) => __awaiter
         return;
     }
     const user = req.user;
-    const removeFBookId = req.params.removeFBookId;
-    yield user_service_1.UserService.RemoveFinishedBooks(user, removeFBookId);
+    const bookId = req.params.bookId;
+    yield user_service_1.UserService.RemoveFinishedBooks(user, bookId);
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
