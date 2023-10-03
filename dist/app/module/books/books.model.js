@@ -45,4 +45,4 @@ const BookSchema = new mongoose_1.Schema({
 }, {
     timestamps: true,
 });
-exports.Books = (0, mongoose_1.model)('Books', BookSchema);
+exports.Books = (0, mongoose_1.model)('Book', BookSchema);

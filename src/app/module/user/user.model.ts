@@ -1,7 +1,7 @@
+import bcrypt from 'bcrypt';
 import { Schema, model } from 'mongoose';
 import config from '../../../config';
 import { IFindUser, IUser, UserModel } from './user.interface';
-import bcrypt from 'bcrypt';
 
 const UserSchema = new Schema<IUser, UserModel>(
   {
@@ -18,9 +18,9 @@ const UserSchema = new Schema<IUser, UserModel>(
       type: String,
       required: true,
     },
-    wishlist: [{ type: Schema.Types.ObjectId, default: [], ref: 'Books' }],
-    readingList: [{ type: Schema.Types.ObjectId, default: [], ref: 'Books' }],
-    finishedBooks: [{ type: Schema.Types.ObjectId, default: [], ref: 'Books' }],
+    wishlist: [{ type: Schema.Types.ObjectId, default: [], ref: 'Book' }],
+    readingList: [{ type: Schema.Types.ObjectId, default: [], ref: 'Book' }],
+    finishedBooks: [{ type: Schema.Types.ObjectId, default: [], ref: 'Book' }],
   },
   {
     toJSON: {
@@ -49,6 +49,7 @@ UserSchema.statics.isPasswordMatched = async function (
   return await bcrypt.compare(givenPassword, savedPassword);
 };
 
+// Pre-save middleware function
 UserSchema.pre('save', async function (next) {
   if (!this.isModified('password')) {
     return next();

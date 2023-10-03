@@ -47,9 +47,9 @@ const DeleteUser = async (id: string): Promise<void> => {
 };
 const GetUserProfile = async (user: JwtPayload): Promise<IUser | null> => {
   const { _id } = user;
-  console.log(user);
 
   const userProfile = await Users.findById(_id).exec();
+  console.log(userProfile);
 
   return userProfile;
 };
@@ -121,7 +121,7 @@ const GetReadingLists = async (user: JwtPayload): Promise<string[]> => {
   if (!userProfile) {
     throw new Error('User not found');
   }
-  console.log(userProfile);
+
   return userProfile.readingList;
 };
 

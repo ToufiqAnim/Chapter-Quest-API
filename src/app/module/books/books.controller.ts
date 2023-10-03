@@ -1,12 +1,12 @@
-import { RequestHandler } from "express";
-import { BookService } from "./books.service";
-import { Request, Response } from "express";
-import pick from "../../../shared/pick";
-import { bookFilterableFields } from "./book.constant";
-import { sendResponse } from "../../../shared/sendResonse";
-import httpStatus from "http-status";
-import { IBook, IReview } from "./books.interface";
-import { catchAsync } from "../../../shared/catchAsync";
+import { RequestHandler } from 'express';
+import { BookService } from './books.service';
+import { Request, Response } from 'express';
+import pick from '../../../shared/pick';
+import { bookFilterableFields } from './books.constant';
+import { sendResponse } from '../../../shared/sendResonse';
+import httpStatus from 'http-status';
+import { IBook, IReview } from './books.interface';
+import { catchAsync } from '../../../shared/catchAsync';
 
 const AddBook = catchAsync(async (req: Request, res: Response) => {
   if (!req.user || !req.body) {
@@ -19,7 +19,7 @@ const AddBook = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IBook>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Book Created successfully",
+    message: 'Book Created successfully',
     data: result,
   });
 });
@@ -30,18 +30,18 @@ const GetAllBooks = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IBook[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Books retrieved successfully",
+    message: 'Books retrieved successfully',
     data: result,
   });
 });
-const GetReview = catchAsync(async (req: Request, res: Response) => {
+const GetReviews = catchAsync(async (req: Request, res: Response) => {
   const bookId = req.params.bookId;
-  const result = await BookService.GetReview(bookId);
+  const result = await BookService.GetReviews(bookId);
 
   sendResponse<IReview[]>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Review retrieved successfully",
+    message: 'Review retrieved successfully',
     data: result,
   });
 });
@@ -52,7 +52,7 @@ const GetSingleBook = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IBook>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Book retrieved successfully",
+    message: 'Book retrieved successfully',
     data: result,
   });
 });
@@ -61,14 +61,14 @@ const UpdateBook = catchAsync(async (req: Request, res: Response) => {
     return res.sendStatus(httpStatus.BAD_REQUEST);
   }
   const bookId = req.params.bookId;
-
+  const user = req.user;
   const updatedData = req.body;
-  const result = await BookService.UpdateBook(bookId, updatedData);
+  const result = await BookService.UpdateBook(bookId, user, updatedData);
 
   sendResponse<IBook>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Book updated successfully",
+    message: 'Book updated successfully',
     data: result,
   });
 });
@@ -80,10 +80,10 @@ const DeleteBook = catchAsync(async (req: Request, res: Response) => {
   const user = req.user;
   const result = await BookService.DeleteBook(bookId, user);
 
-  res.status(200).json({
+  sendResponse<IBook>(res, {
+    statusCode: httpStatus.OK,
     success: true,
-    message: "Selected Book deleted successfully!",
-    data: result,
+    message: 'Book deleted successfully',
   });
 });
 
@@ -99,7 +99,7 @@ const AddReview = catchAsync(async (req: Request, res: Response) => {
   sendResponse<IBook>(res, {
     statusCode: httpStatus.OK,
     success: true,
-    message: "Review posted Successfully",
+    message: 'Review posted Successfully',
     data: result,
   });
 });
@@ -110,6 +110,6 @@ export const BookController = {
   GetSingleBook,
   UpdateBook,
   DeleteBook,
-  GetReview,
+  GetReviews,
   AddReview,
 };

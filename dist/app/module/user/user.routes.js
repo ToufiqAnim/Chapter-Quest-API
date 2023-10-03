@@ -10,7 +10,7 @@ const user_controller_1 = require("./user.controller");
 const router = express_1.default.Router();
 // Bonus part
 router.get('/wishlist', (0, auth_1.default)(), user_controller_1.UserController.GetWishlist);
-router.get('/readingList', user_controller_1.UserController.GetReadingList);
+router.get('/readingList', (0, auth_1.default)(), user_controller_1.UserController.GetReadingList);
 router.get('/finishedBooks', (0, auth_1.default)(), user_controller_1.UserController.GetFinishedBooks);
 router.post('/addToWishlist/:bookId', (0, auth_1.default)(), user_controller_1.UserController.AddToWishlist);
 router.post('/addToReadingList/:bookId', (0, auth_1.default)(), user_controller_1.UserController.AddToReadingList);

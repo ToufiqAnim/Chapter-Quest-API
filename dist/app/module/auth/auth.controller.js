@@ -29,9 +29,9 @@ const config_1 = __importDefault(require("../../../config"));
 const catchAsync_1 = require("../../../shared/catchAsync");
 const auth_service_1 = require("./auth.service");
 const sendResonse_1 = require("../../../shared/sendResonse");
-const signUpUser = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const signup = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const user = req.body;
-    const result = yield auth_service_1.AuthService.signUpUser(user);
+    const result = yield auth_service_1.AuthService.CreateUser(user);
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.CREATED,
         success: true,
@@ -39,23 +39,41 @@ const signUpUser = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, 
         data: result,
     });
 }));
-const loginUser = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const userData = req.body;
-    const result = yield auth_service_1.AuthService.loginUser(userData);
+const login = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const loginData = __rest(req.body, []);
+    const result = yield auth_service_1.AuthService.Login(loginData);
     const { refreshToken } = result, others = __rest(result, ["refreshToken"]);
+    // set refresh token into cookie
     const cookieOptions = {
         secure: config_1.default.env === 'production',
         httpOnly: true,
     };
     res.cookie('refreshToken', refreshToken, cookieOptions);
     (0, sendResonse_1.sendResponse)(res, {
-        statusCode: http_status_1.default.OK,
+        statusCode: http_status_1.default.CREATED,
         success: true,
-        message: 'Login Successful!',
+        message: 'User logged in successfully',
         data: others,
     });
 }));
+const refreshToken = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    const { refreshToken } = req.cookies;
+    const result = yield auth_service_1.AuthService.RefreshToken(refreshToken);
+    // set refresh token into cookie
+    const cookieOptions = {
+        secure: config_1.default.env === 'production',
+        httpOnly: true,
+    };
+    res.cookie('refreshToken', refreshToken, cookieOptions);
+    (0, sendResonse_1.sendResponse)(res, {
+        statusCode: http_status_1.default.CREATED,
+        success: true,
+        message: 'New access token generated successfully !',
+        data: result,
+    });
+}));
 exports.AuthController = {
-    signUpUser,
-    loginUser,
+    signup,
+    login,
+    refreshToken,
 };

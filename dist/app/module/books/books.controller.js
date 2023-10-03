@@ -15,7 +15,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 exports.BookController = void 0;
 const books_service_1 = require("./books.service");
 const pick_1 = __importDefault(require("../../../shared/pick"));
-const book_constant_1 = require("./book.constant");
+const books_constant_1 = require("./books.constant");
 const sendResonse_1 = require("../../../shared/sendResonse");
 const http_status_1 = __importDefault(require("http-status"));
 const catchAsync_1 = require("../../../shared/catchAsync");
@@ -29,27 +29,27 @@ const AddBook = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, voi
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Book Created successfully",
+        message: 'Book Created successfully',
         data: result,
     });
 }));
 const GetAllBooks = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
-    const filters = (0, pick_1.default)(req.query, book_constant_1.bookFilterableFields);
+    const filters = (0, pick_1.default)(req.query, books_constant_1.bookFilterableFields);
     const result = yield books_service_1.BookService.GetAllBooks(filters);
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Books retrieved successfully",
+        message: 'Books retrieved successfully',
         data: result,
     });
 }));
-const GetReview = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
+const GetReviews = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
     const bookId = req.params.bookId;
-    const result = yield books_service_1.BookService.GetReview(bookId);
+    const result = yield books_service_1.BookService.GetReviews(bookId);
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Review retrieved successfully",
+        message: 'Review retrieved successfully',
         data: result,
     });
 }));
@@ -59,7 +59,7 @@ const GetSingleBook = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Book retrieved successfully",
+        message: 'Book retrieved successfully',
         data: result,
     });
 }));
@@ -68,12 +68,13 @@ const UpdateBook = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, 
         return res.sendStatus(http_status_1.default.BAD_REQUEST);
     }
     const bookId = req.params.bookId;
+    const user = req.user;
     const updatedData = req.body;
-    const result = yield books_service_1.BookService.UpdateBook(bookId, updatedData);
+    const result = yield books_service_1.BookService.UpdateBook(bookId, user, updatedData);
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Book updated successfully",
+        message: 'Book updated successfully',
         data: result,
     });
 }));
@@ -84,10 +85,10 @@ const DeleteBook = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, 
     const bookId = req.params.bookId;
     const user = req.user;
     const result = yield books_service_1.BookService.DeleteBook(bookId, user);
-    res.status(200).json({
+    (0, sendResonse_1.sendResponse)(res, {
+        statusCode: http_status_1.default.OK,
         success: true,
-        message: "Selected Book deleted successfully!",
-        data: result,
+        message: 'Book deleted successfully',
     });
 }));
 const AddReview = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, void 0, void 0, function* () {
@@ -101,7 +102,7 @@ const AddReview = (0, catchAsync_1.catchAsync)((req, res) => __awaiter(void 0, v
     (0, sendResonse_1.sendResponse)(res, {
         statusCode: http_status_1.default.OK,
         success: true,
-        message: "Review posted Successfully",
+        message: 'Review posted Successfully',
         data: result,
     });
 }));
@@ -111,6 +112,6 @@ exports.BookController = {
     GetSingleBook,
     UpdateBook,
     DeleteBook,
-    GetReview,
+    GetReviews,
     AddReview,
 };

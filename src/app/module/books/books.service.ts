@@ -47,7 +47,7 @@ const GetAllBooks = async (filters: IBookFilters): Promise<IBook[]> => {
 };
 
 //GET REVIEWS
-const GetReview = async (bookId: string): Promise<IReview[] | null> => {
+const GetReviews = async (bookId: string): Promise<IReview[] | null> => {
   const book = await Books.findById(bookId).populate('reviews.reviewer');
   if (!book) {
     return null;
@@ -77,16 +77,27 @@ const GetSingleBook = async (bookId: string): Promise<IBook | null> => {
 
 //UPDATE BOOK
 const UpdateBook = async (
-  bookId: string,
-
+  updateBookId: string,
+  user: JwtPayload,
   payload: Partial<IBook>
 ): Promise<IBook | null> => {
-  const book = await Books.findById(bookId);
+  const book = await Books.findById(updateBookId);
+
   if (!book) {
-    throw new Error('No Book Found!!');
+    throw new Error('No book found!');
   }
 
-  const updatedBook = await Books.findByIdAndUpdate(bookId, payload, {
+  const areEqual = book.publisher && book.publisher.toString() === user._id;
+
+  if (!areEqual) {
+    throw new Error('You are not allowed to edit this book!');
+  }
+
+  if ('publisher' in payload) {
+    throw new Error('Cannot update the publisher field');
+  }
+
+  const updatedBook = await Books.findByIdAndUpdate(updateBookId, payload, {
     new: true,
   });
 
@@ -98,18 +109,21 @@ const UpdateBook = async (
 };
 
 //DELETE BOOK
-const DeleteBook = async (
-  bookId: string,
-  user: JwtPayload
-): Promise<IBook | null> => {
+const DeleteBook = async (bookId: string, user: JwtPayload): Promise<void> => {
   const book = await Books.findById(bookId);
 
   if (!book) {
     throw new Error('No book found!');
   }
 
-  const deletedBook = await Books.findByIdAndDelete(bookId);
-  return deletedBook;
+  const areEqual = book.publisher && book.publisher.toString() === user._id;
+
+  if (areEqual) {
+    const deletedBook = await Books.findByIdAndDelete(bookId);
+    if (!deletedBook) {
+      throw new Error('No user found!');
+    }
+  }
 };
 
 //POST REVIEWS
@@ -144,5 +158,5 @@ export const BookService = {
   UpdateBook,
   DeleteBook,
   PostReview,
-  GetReview,
+  GetReviews,
 };

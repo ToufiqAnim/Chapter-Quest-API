@@ -57,7 +57,7 @@ const GetAllBooks = (filters) => __awaiter(void 0, void 0, void 0, function* () 
     return result;
 });
 //GET REVIEWS
-const GetReview = (bookId) => __awaiter(void 0, void 0, void 0, function* () {
+const GetReviews = (bookId) => __awaiter(void 0, void 0, void 0, function* () {
     const book = yield books_model_1.Books.findById(bookId).populate('reviews.reviewer');
     if (!book) {
         return null;
@@ -84,12 +84,19 @@ const GetSingleBook = (bookId) => __awaiter(void 0, void 0, void 0, function* ()
     return book;
 });
 //UPDATE BOOK
-const UpdateBook = (bookId, payload) => __awaiter(void 0, void 0, void 0, function* () {
-    const book = yield books_model_1.Books.findById(bookId);
+const UpdateBook = (updateBookId, user, payload) => __awaiter(void 0, void 0, void 0, function* () {
+    const book = yield books_model_1.Books.findById(updateBookId);
     if (!book) {
-        throw new Error('No Book Found!!');
+        throw new Error('No book found!');
     }
-    const updatedBook = yield books_model_1.Books.findByIdAndUpdate(bookId, payload, {
+    const areEqual = book.publisher && book.publisher.toString() === user._id;
+    if (!areEqual) {
+        throw new Error('You are not allowed to edit this book!');
+    }
+    if ('publisher' in payload) {
+        throw new Error('Cannot update the publisher field');
+    }
+    const updatedBook = yield books_model_1.Books.findByIdAndUpdate(updateBookId, payload, {
         new: true,
     });
     if (!updatedBook) {
@@ -103,8 +110,13 @@ const DeleteBook = (bookId, user) => __awaiter(void 0, void 0, void 0, function*
     if (!book) {
         throw new Error('No book found!');
     }
-    const deletedBook = yield books_model_1.Books.findByIdAndDelete(bookId);
-    return deletedBook;
+    const areEqual = book.publisher && book.publisher.toString() === user._id;
+    if (areEqual) {
+        const deletedBook = yield books_model_1.Books.findByIdAndDelete(bookId);
+        if (!deletedBook) {
+            throw new Error('No user found!');
+        }
+    }
 });
 //POST REVIEWS
 const PostReview = (id, user, reviewData) => __awaiter(void 0, void 0, void 0, function* () {
@@ -128,5 +140,5 @@ exports.BookService = {
     UpdateBook,
     DeleteBook,
     PostReview,
-    GetReview,
+    GetReviews,
 };

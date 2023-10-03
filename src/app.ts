@@ -1,9 +1,9 @@
-import express, { Application, NextFunction, Request, Response } from "express";
-import cors from "cors";
-import routers from "./app/routes";
-import globalErrorHandler from "./app/middleware/globalErrorHandler";
-import httpStatus from "http-status";
-import cookieParser from "cookie-parser";
+import express, { Application, NextFunction, Request, Response } from 'express';
+import cors from 'cors';
+import routers from './app/routes';
+import globalErrorHandler from './app/middleware/globalErrorHandler';
+import httpStatus from 'http-status';
+import cookieParser from 'cookie-parser';
 
 const app: Application = express();
 
@@ -15,7 +15,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
 
 // Routes
-app.use("/api/v1/", routers);
+app.use('/api/v1', routers);
 
 // global error handler
 app.use(globalErrorHandler);
@@ -24,11 +24,11 @@ app.use(globalErrorHandler);
 app.use((req: Request, res: Response, next: NextFunction) => {
   res.status(httpStatus.NOT_FOUND).json({
     success: false,
-    message: "Not Found",
+    message: 'Not Found',
     errorMessages: [
       {
         path: req.originalUrl,
-        message: "API Not Found",
+        message: 'API Not Found',
       },
     ],
   });

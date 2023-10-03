@@ -58,8 +58,8 @@ const DeleteUser = (id) => __awaiter(void 0, void 0, void 0, function* () {
 });
 const GetUserProfile = (user) => __awaiter(void 0, void 0, void 0, function* () {
     const { _id } = user;
-    console.log(user);
     const userProfile = yield user_model_1.Users.findById(_id).exec();
+    console.log(userProfile);
     return userProfile;
 });
 const AddToWishlist = (bookId, user) => __awaiter(void 0, void 0, void 0, function* () {
@@ -105,7 +105,6 @@ const GetReadingLists = (user) => __awaiter(void 0, void 0, void 0, function* ()
     if (!userProfile) {
         throw new Error('User not found');
     }
-    console.log(userProfile);
     return userProfile.readingList;
 });
 const RemoveFromReadingList = (user, bookId) => __awaiter(void 0, void 0, void 0, function* () {

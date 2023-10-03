@@ -13,9 +13,9 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 exports.Users = void 0;
+const bcrypt_1 = __importDefault(require("bcrypt"));
 const mongoose_1 = require("mongoose");
 const config_1 = __importDefault(require("../../../config"));
-const bcrypt_1 = __importDefault(require("bcrypt"));
 const UserSchema = new mongoose_1.Schema({
     name: {
         type: String,
@@ -30,9 +30,9 @@ const UserSchema = new mongoose_1.Schema({
         type: String,
         required: true,
     },
-    wishlist: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: 'Books' }],
-    readingList: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: 'Books' }],
-    finishedBooks: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: 'Books' }],
+    wishlist: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: 'Book' }],
+    readingList: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: 'Book' }],
+    finishedBooks: [{ type: mongoose_1.Schema.Types.ObjectId, default: [], ref: 'Book' }],
 }, {
     toJSON: {
         transform(_doc, ret) {
@@ -52,6 +52,7 @@ UserSchema.statics.isPasswordMatched = function (givenPassword, savedPassword) {
         return yield bcrypt_1.default.compare(givenPassword, savedPassword);
     });
 };
+// Pre-save middleware function
 UserSchema.pre('save', function (next) {
     return __awaiter(this, void 0, void 0, function* () {
         if (!this.isModified('password')) {
